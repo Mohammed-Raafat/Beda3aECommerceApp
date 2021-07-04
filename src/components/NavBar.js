@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     display: 'inline',
-    marginRight: '50px'
+    //marginRight: '50px'
   },
   linkTitle: {
     fontSize: '1.25rem',
@@ -32,6 +32,14 @@ const useStyles = makeStyles((theme) => ({
     //marginRight: '15px'
     //marginLeft: '15px'
   },
+  badge: {
+    width: '15px',
+    height: '15px',
+    fontSize: '10px',
+    minWidth: 0,
+    top: '3px',
+    right: '5px'
+  }
 }));
 
 const NavBar = ({
@@ -45,18 +53,22 @@ const NavBar = ({
       <AppBar position="fixed" className={classes.root}>
         <Toolbar>
           <Grid container>
-            <Grid item xs={8}>
-              <Typography variant="h6" className={classes.title}>
-                <Link to="/" >
-                  Beda3a
-                </Link>
-              </Typography>
-              <SearchBox
-                categories={categories}
-                getSearchAndCategory={getSearchAndCategory}
-              />
+            <Grid item container alignItems='center' xs={10} md={8}>
+              <Grid item xs={3} md={2}>
+                <Typography variant="h6" className={classes.title}>
+                  <Link to="/" >
+                    Beda3a
+                  </Link>
+                </Typography>
+              </Grid>
+              <Grid item xs={9} md={10}>
+                <SearchBox
+                  categories={categories}
+                  getSearchAndCategory={getSearchAndCategory}
+                />
+              </Grid>
             </Grid>
-            <Grid item container direction='row' alignItems='center' justify='flex-end' xs={4}>
+            <Grid item container direction='row' alignItems='center' justify='flex-end' xs={2} md={4}>
 {/*               <Link to='/'>
                 <span className={classes.linkTitle}>
                   <Icon name="user" color='grey' inverted/>
@@ -73,7 +85,7 @@ const NavBar = ({
               &nbsp; */}
               <NavLink to="/cart">
                   <span className={classes.linkTitle}>
-                    <Badge badgeContent={shoppingCartLength} color="secondary" >
+                    <Badge badgeContent={shoppingCartLength} color="secondary" classes={{badge: classes.badge}}>
                       <Icon name="shopping cart" color='grey' inverted/>
                     </Badge>
                     &nbsp;Cart

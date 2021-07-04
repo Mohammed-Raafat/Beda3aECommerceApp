@@ -28,12 +28,20 @@ const SearchBox = ({ categories, getSearchAndCategory }) => {
         }
     };
 
-    return ( 
-        <Input type='text' placeholder='Search...' action>
+    return (
+        <Input type='text' placeholder='Search...' action fluid>
             <input value={searchTerm} onChange={handleChange}/>
-            {/* <Select options={options} defaultValue='all' onChange={handleDropdownChange} /> */}
-            <Button onClick={handleSubmit} type='submit'>Search</Button>
+            <Button type='submit' onClick={handleSubmit} icon='search'></Button>
         </Input>
+        /*<div>
+            <TextField label="Search..." variant="outlined" />
+            <Button onClick={handleSubmit} type='submit'>Search</Button>
+        </div>*/
+        /* <Input type='text' placeholder='Search...' action>
+            <input value={searchTerm} onChange={handleChange}/>
+            <Select options={options} defaultValue='all' onChange={handleDropdownChange} />
+            <Button onClick={handleSubmit} type='submit'>Search</Button>
+        </Input> */
     );
 }
  

@@ -27,6 +27,11 @@ class App extends Component {
       sortedBy: 'default'
     };
 
+    saveToLocal = () => {
+      const local = this.state.shoppingCart;
+      localStorage.setItem('shoppingCart', JSON.stringify(local));
+    }
+
     getMinMax = (arr, value) => {
       return {
         start: Math.min.apply(null, arr.map(item => item[value])), 
@@ -125,7 +130,7 @@ class App extends Component {
       
       this.setState({
         shoppingCart: shoppingCartArr
-      });
+      });//, this.saveToLocal);
     };
     
     /* getProductAddedToWishlist = (product, loved) => {
@@ -148,7 +153,7 @@ class App extends Component {
 
       this.setState({
         shoppingCart: shoppingCartArr
-      });
+      });//, this.saveToLocal);
     };
 
     getRemovedItemFromCart = (item) => {
@@ -156,7 +161,7 @@ class App extends Component {
       
       this.setState({
         shoppingCart: shoppingCartArr
-      });
+      });//, this.saveToLocal);
     };
 
     getRemoveAllItemsFromCart = (flag) => {
