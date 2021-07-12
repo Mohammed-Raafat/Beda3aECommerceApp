@@ -10,7 +10,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Badge from "@material-ui/core/Badge";
 import { Icon } from "semantic-ui-react";
 import SearchBox from "./SearchBox";
-import { Grid } from "@material-ui/core";
+import { Grid, Container } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,16 +42,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NavBar = ({
-  categories,
-  getSearchAndCategory,
-  shoppingCartLength /*wishlistLength*/,
-}) => {
+const NavBar = ({ loading, categories, getSearchAndCategory, shoppingCartLength /*wishlistLength*/ }) => {
   const classes = useStyles();
 
   return (
       <AppBar position="fixed" className={classes.root}>
-        <Toolbar>
+        <Container maxWidth='lg'>
+        <Toolbar style={{padding: 0}}>
           <Grid container>
             <Grid item container alignItems='center' xs={10} md={8}>
               <Grid item xs={3} md={2}>
@@ -63,6 +60,7 @@ const NavBar = ({
               </Grid>
               <Grid item xs={9} md={10}>
                 <SearchBox
+                  loading={loading}
                   categories={categories}
                   getSearchAndCategory={getSearchAndCategory}
                 />
@@ -85,15 +83,18 @@ const NavBar = ({
               &nbsp; */}
               <NavLink to="/cart">
                   <span className={classes.linkTitle}>
+                    <Grid container alignItems='center'>
                     <Badge badgeContent={shoppingCartLength} color="secondary" classes={{badge: classes.badge}}>
                       <Icon name="shopping cart" color='grey' inverted/>
                     </Badge>
-                    &nbsp;Cart
+                      <span>&nbsp;Cart</span>
+                    </Grid>
                   </span>
               </NavLink>
             </Grid>
           </Grid>
         </Toolbar>
+        </Container>
       </AppBar>
   );
 };

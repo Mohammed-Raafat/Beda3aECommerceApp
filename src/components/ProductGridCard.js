@@ -1,9 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import { Card, Icon, Image, Button, Label } from 'semantic-ui-react';
-import IconButton from '@material-ui/core/IconButton';
-import ImageModal from './ImageModal';
+import React, { useState, useEffect, useRef } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import {
+  Card,
+  Icon,
+  Image,
+  Button,
+  Label,
+  Placeholder,
+} from "semantic-ui-react";
+import IconButton from "@material-ui/core/IconButton";
+import ImageModal from "./ImageModal";
+import Skeleton from 'react-loading-skeleton';
 
 const useStyles = makeStyles(() => ({
   imgDiv: {
@@ -11,51 +19,81 @@ const useStyles = makeStyles(() => ({
   },
   image: {
     width: 100,
-    maxHeight: 150
+    maxHeight: 150,
   },
   loveBtn: {
-    padding: 0
-  } 
+    padding: 0,
+  },
 }));
 
-const ProductGridCard = ({ product, productAddedToCart, /*productAddedToWishlist, isInWishList*/ }) => {
+const ProductGridCard = ({
+  loading,
+  product,
+  productAddedToCart /*productAddedToWishlist, isInWishList*/,
+}) => {
   //const [loved, setLoved] = useState(isInWishList);
   const classes = useStyles();
-
+//  const loading = true;
   const handleAddToCart = () => {
     productAddedToCart(product);
   };
 
-/*   const handleAddToWishlist = () => {
+  /*   const handleAddToWishlist = () => {
     setLoved(!loved);
   }; */
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     productAddedToWishlist(product, loved);
   }, [loved]); */
 
   return (
     <Card>
-      <ImageModal title={product.title} imgSrc={product.image}>
-        <Grid container alignItems='center' className={classes.imgDiv}>
-            <Image alt={product.title} src={product.image} className={classes.image} centered />
+      {loading ? (
+        /* <Placeholder className={classes.imgDiv}>
+          <Placeholder.Image rectangular />
+        </Placeholder> */
+        <Grid>
+          <Skeleton style={{lineHeight: 2}} className={classes.imgDiv}/>
         </Grid>
-      </ImageModal>
+      ) : (
+        <ImageModal title={product.title} imgSrc={product.image}>
+          <Grid container alignItems="center" className={classes.imgDiv}>
+            <Image
+              alt={product.title}
+              src={product.image}
+              className={classes.image}
+              centered
+            />
+          </Grid>
+        </ImageModal>
+      )}
       <Card.Content>
         <Card.Meta>
           <div>
-          <Label size='tiny' color='green' circular>In stock</Label>
-          <label style={{float: 'right', color: '#000'}}>${product.price}</label>
+          {loading? <Skeleton width={50}/> : 
+            <Label size="tiny" color="green" circular>
+              In stock
+            </Label>}
+            <label style={{ float: "right", color: "#000" }}>
+              {loading? <Skeleton width={50}/> : `$${product.price}`}
+            </label>
           </div>
         </Card.Meta>
-        <Card.Description>{product.title}</Card.Description>
+        <Card.Description>
+          {loading? <Skeleton /> : product.title}
+        </Card.Description>
       </Card.Content>
       <Card.Content extra>
         <Card.Header>
-        <Button onClick={handleAddToCart} color='blue' fluid>
-            <Icon name='cart' /> Add to cart
-        </Button>
-     {/*     <Button onClick={handleAddToCart} floated='left' size='small' color='blue' compact>
+          <Button
+            onClick={handleAddToCart}
+            color="blue"
+            fluid
+            disabled={loading}
+          >
+            <Icon name="cart" /> Add to cart
+          </Button>
+          {/*     <Button onClick={handleAddToCart} floated='left' size='small' color='blue' compact>
             <Icon name='cart' /> Add to cart
           </Button>
            <IconButton onClick={handleAddToWishlist} aria-label="wishlist" className={classes.loveBtn}>
@@ -65,6 +103,6 @@ const ProductGridCard = ({ product, productAddedToCart, /*productAddedToWishlist
       </Card.Content>
     </Card>
   );
-}
+};
 
 export default ProductGridCard;

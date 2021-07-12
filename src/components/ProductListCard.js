@@ -63,7 +63,7 @@ const ProductListCard = ({ product, productAddedToCart, /*productAddedToWishlist
                             {product.title}
                         </Grid>
                         <Grid item sm={2}>
-                            <div className={classes.priceLabel}><Label size='large'>${product.price}</Label></div>
+                            <div className={classes.priceLabel}>${product.price}</div>
                         </Grid>
                     </Grid>
                 </Item.Header>

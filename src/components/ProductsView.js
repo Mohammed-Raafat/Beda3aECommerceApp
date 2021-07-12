@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Icon, Button, Segment, Item } from 'semantic-ui-react';
+import { Menu, Icon, Button, Segment, Item, Card, Label, Placeholder } from 'semantic-ui-react';
 import { Grid } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -44,7 +44,7 @@ const sortBy = (arr, value, ascOrDesc = 'asc') => {
     }
 };
 
-const ProductsView = ({ categories, filteredProducts, getProductAddedToCart, /*getProductAddedToWishlist, wishlist,*/ sortedBy , getSortedBy}) => {
+const ProductsView = ({ loading, categories, filteredProducts, getProductAddedToCart, /*getProductAddedToWishlist, wishlist,*/ sortedBy , getSortedBy}) => {
     const setProductAddedToCart = (prod) => {
         getProductAddedToCart(prod);
     };
@@ -68,6 +68,14 @@ const ProductsView = ({ categories, filteredProducts, getProductAddedToCart, /*g
             </Item.Group>
         );
     };
+
+    const renderSkeletonProducts = (len) => {
+        return [...Array(len)].map((e, i) => (
+            <Grid key={i} item xs={12} sm={6} lg={4} container justify="center">
+                <ProductGridCard loading={true}/>
+            </Grid>
+        ));
+    }
 
     const classes = useStyle();
 
@@ -98,7 +106,7 @@ const ProductsView = ({ categories, filteredProducts, getProductAddedToCart, /*g
     ];
 
     const renderedOptions = options.map(option => <option key={option.value} value={option.value}>{option.name}</option>);
-    
+
     useEffect(() => {
         setProductsToShow(filteredProducts);
     }, [filteredProducts]);
@@ -150,17 +158,17 @@ const ProductsView = ({ categories, filteredProducts, getProductAddedToCart, /*g
                             <Grid item sm={7} md={5} container direction='row' alignItems='center'>
                                 <Grid item xs={6} sm={2} md={3}>
                                     <Button.Group size='small'>
-                                        <Button icon onClick={handleGridView} className={classes.gridListViewBtn}>
+                                        <Button icon onClick={handleGridView} className={classes.gridListViewBtn} disabled={loading}>
                                             <Icon name='grid layout' size='large' color={!activeListViewBtn? 'blue' : 'grey'}/>
                                         </Button>
-                                        <Button icon onClick={handleListView} className={classes.gridListViewBtn}>
+                                        <Button icon onClick={handleListView} className={classes.gridListViewBtn} disabled={loading}>
                                             <Icon name='list layout' size='large' color={activeListViewBtn? 'blue' : 'grey'}/>
                                         </Button>
                                     </Button.Group>
                                 </Grid>
                                 <Grid item xs={6} sm={10} md={9} container direction='row' alignItems='center' justify='center'>
                                     <Typography variant="subtitle1">Sort by:&nbsp;</Typography>    
-                                    <FormControl variant="outlined" size='small'>
+                                    <FormControl variant="outlined" size='small' disabled={loading}>
                                         <Select native onChange={handleDropdownChange}>
                                             {renderedOptions}
                                         </Select>
@@ -187,7 +195,9 @@ const ProductsView = ({ categories, filteredProducts, getProductAddedToCart, /*g
             </Hidden>
             <Segment attached>
                 <Grid item container spacing={1} style={{padding: 5}}>
-                    {renderedProducts}
+                    {loading?
+                        renderSkeletonProducts(6) : renderedProducts
+                    }
                 </Grid>
             </Segment>
         </Grid>

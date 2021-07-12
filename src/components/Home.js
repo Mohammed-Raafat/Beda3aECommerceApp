@@ -43,12 +43,13 @@ const Home = (props) => {
                         onClose={() => setOpen(false)}
                         onOpen={() => setOpen(true)}
                         open={open}
-                        trigger={<Button circular color='blue' icon='filter' className={classes.filterBtn} size='huge' />}
+                        trigger={<Button circular color='blue' icon='filter' className={classes.filterBtn} size='huge' disabled={props.state.loading}/>}
                         className={classes.modal}
                     >
                         <Modal.Header>Filters</Modal.Header>
                         <Modal.Content>
                             <Filters
+                                loading={props.state.loading}
                                 filteredCategories={props.state.filteredCategories}
                                 getCategoriesFilteration={props.getCategoriesFilteration}
                                 price={props.state.filteredPrice}
@@ -61,6 +62,7 @@ const Home = (props) => {
                     <Grid item xs={12} md={3} xl={2}>
                         <Paper style={{padding: 5}}>
                             <Filters
+                                loading={props.state.loading}
                                 filteredCategories={props.state.filteredCategories}
                                 getCategoriesFilteration={props.getCategoriesFilteration}
                                 price={props.state.filteredPrice}
@@ -71,6 +73,7 @@ const Home = (props) => {
                 </Hidden>
                 <Grid item xs={12} md={9} xl={10}>
                     <ProductsView
+                        loading={props.state.loading}
                         categories={Object.keys(props.state.filteredCategories).filter(key => props.state.filteredCategories[key])}
                         filteredProducts={props.state.filteredProducts}
                         getProductAddedToCart={getProductAddedToCart}

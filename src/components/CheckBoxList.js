@@ -6,6 +6,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import Skeleton from 'react-loading-skeleton';
 
 const CheckBoxList = ({ title, checkBoxList, getCategoriesFilteration }) => {
     const titleId = title.toLowerCase().replace(' ', '-');
@@ -31,14 +32,23 @@ const CheckBoxList = ({ title, checkBoxList, getCategoriesFilteration }) => {
         );
     });
 
+    const renderedSkeletonList = (
+        <Skeleton style={{width: 180, margin: '15px'}} count={4}/>
+    );
+    
+
     return (
         <FormControl component="fieldset">
             <Typography id={`${titleId}-checkbox-list`} variant="h6" gutterBottom>
                 {title}:
             </Typography>
-            <FormGroup row>
-                <List>{renderedList}</List>
-            </FormGroup>
+            {Object.keys(checkBoxList).length === 0?
+                renderedSkeletonList
+                :
+                <FormGroup row>
+                    <List>{renderedList}</List>
+                </FormGroup>
+            }
         </FormControl>
     );
 };

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RangeSlider = ({ title, start, end, getPriceFilteration }) => {
+const RangeSlider = ({ loading, title, start, end, getPriceFilteration }) => {
   const titleId = title.toLowerCase().replace(' ', '-');
   const [value, setValue] = useState([start, end]);
   
@@ -70,6 +70,7 @@ const RangeSlider = ({ title, start, end, getPriceFilteration }) => {
 
       <Grid item xs={12} className={classes.paddingRightLeft}>
         <Slider
+          disabled={loading}
           min={start}
           max={end}
           value={value}
@@ -83,20 +84,20 @@ const RangeSlider = ({ title, start, end, getPriceFilteration }) => {
         <div>
         <Grid item container direction='row' alignItems='center' xs={12} className={classes.paddingTopDown}>
           <Grid item xs={5}>
-            <TextField value={value[0]} onBlur={handleBlur} onChange={(e) => handleInputChange(e, 0)} id={`${titleId}-start-number`} type="number" variant="outlined" size="small"/>
+            <TextField value={value[0]} onBlur={handleBlur} onChange={(e) => handleInputChange(e, 0)} id={`${titleId}-start-number`} type="number" variant="outlined" size="small" disabled={loading}/>
           </Grid>
           <Grid item xs={2} className={classes.dash}>
             <span>&nbsp;<b>&#8211;</b>&nbsp;</span>
           </Grid>
           <Grid item xs={5}>
-            <TextField value={value[1]} onBlur={handleBlur} onChange={(e) => handleInputChange(e, 1)} id={`${titleId}-end-number`} type="number" variant="outlined" size="small"/>
+            <TextField value={value[1]} onBlur={handleBlur} onChange={(e) => handleInputChange(e, 1)} id={`${titleId}-end-number`} type="number" variant="outlined" size="small" disabled={loading}/>
           </Grid>
         </Grid>
         </div>
       </Grid>
 
       <Grid item xs={12}>
-        <Button onClick={handleApplyClick} size='tiny' floated='right' primary compact>Apply</Button>
+        <Button onClick={handleApplyClick} size='tiny' floated='right' primary compact disabled={loading}>Apply</Button>
       </Grid>
     </Grid>
   );

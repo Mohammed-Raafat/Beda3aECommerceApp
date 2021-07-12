@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Grid } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
+import { Placeholder } from 'semantic-ui-react'
 import CheckBoxList from './CheckBoxList';
 import RangeSlider from './RangeSlider';
+import Skeleton from 'react-loading-skeleton';
 
 const Filters = (props) => {
     return (
@@ -14,6 +16,7 @@ const Filters = (props) => {
             />
             <Divider />
             <RangeSlider
+                loading={props.loading}
                 title='Price ($)'
                 start={props.price.start}
                 end={props.price.end}

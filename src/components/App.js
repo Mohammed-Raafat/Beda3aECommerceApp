@@ -17,6 +17,7 @@ import Loading from './Loading';
 
 class App extends Component {
     state = {
+      loading: false,
       products: [],
       categories: [],
       filteredProducts: [],
@@ -24,13 +25,14 @@ class App extends Component {
       filteredPrice: {},
       //wishlist: [],
       shoppingCart: [],
-      sortedBy: 'default'
+      sortedBy: 'default',
+      listOrGrid: 'grid'
     };
 
-    saveToLocal = () => {
+    /* saveToLocal = () => {
       const local = this.state.shoppingCart;
       localStorage.setItem('shoppingCart', JSON.stringify(local));
-    }
+    } */
 
     getMinMax = (arr, value) => {
       return {
@@ -40,9 +42,13 @@ class App extends Component {
     };
 
     componentDidMount() {
+      this.setState({
+        loading: true
+      });
       StoreAPI.get('/products')
       .then(({data}) => {
         this.setState({
+          loading: false,
           products: data,
           categories: [...new Set(data.map(product => product.category))],
           filteredProducts: data,
@@ -50,7 +56,12 @@ class App extends Component {
           filteredPrice: this.getMinMax(data, 'price')
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        this.setState({
+          loading: true
+        });
+        console.log(error)
+      });
     }
 
     getPriceFilteration = (price) => {
@@ -187,17 +198,17 @@ class App extends Component {
     };
     
     render() {
-      if(this.state.products.length === 0) {
+      /* if(this.state.products.length === 0) {
         return (
-            <Loading />
+            <Skeleton variant="rect" width={210} height={118} />
         );
-      }
+      } */
 
       return (
         <React.Fragment>
-          <NavBar categories={this.state.categories} getSearchAndCategory={this.getSearchAndCategory} shoppingCartLength={this.state.shoppingCart.length} /* wishlistLength={this.state.wishlist.length} *//>
+          <NavBar loading={this.state.loading} categories={this.state.categories} getSearchAndCategory={this.getSearchAndCategory} shoppingCartLength={this.state.shoppingCart.length} /* wishlistLength={this.state.wishlist.length} *//>
 
-          <Container style={{paddingTop: 80, paddingRight: '100px !important'}} maxWidth='xl'>
+          <Container style={{paddingTop: 80}} maxWidth='lg'>
             <Grid item>
               <Switch>
                 <Route
