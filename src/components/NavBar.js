@@ -54,7 +54,7 @@ const NavBar = ({ loading, categories, getSearchAndCategory, shoppingCartLength 
               <Grid item xs={3} md={2}>
                 <Typography variant="h6" className={classes.title}>
                   <Link to="/" >
-                    Beda3a
+                    beda3a
                   </Link>
                 </Typography>
               </Grid>
