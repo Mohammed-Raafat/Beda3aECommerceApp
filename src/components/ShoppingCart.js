@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Button, Message, Confirm, Modal, Icon } from 'semantic-ui-react';
+import { Button, Message, Confirm, Modal } from 'semantic-ui-react';
 import { Container, Grid } from '@material-ui/core';
 import Hidden from '@material-ui/core/Hidden';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
-import Divider from '@material-ui/core/Divider';
 import CartItem from './CartItem';
-import Badge from '@material-ui/core/Badge';
 
 const useStyle = makeStyles(theme => ({
     summaryCard: {

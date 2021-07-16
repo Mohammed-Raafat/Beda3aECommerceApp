@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'semantic-ui-react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import Hidden from '@material-ui/core/Hidden';
+import { Grid, Paper, Hidden } from '@material-ui/core';
+//import Paper from '@material-ui/core/Paper';
+//import Hidden from '@material-ui/core/Hidden';
 import ProductsView from './ProductsView';
 import Filters from './Filters';
 

@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Container, Grid } from '@material-ui/core';
-//import { Segment } from 'semantic-ui-react';
 import StoreAPI from '../apis/StoreAPI';
 import NavBar from './NavBar';
-//import ProductList from './ProductList';
-
-//import Paper from '@material-ui/core/Paper';
-import './style.css';
-
-//import { Button, Icon } from 'semantic-ui-react';
 import Home from './Home';
 //import WishlistPage from './WishlistPage';
 import ShoppingCart from './ShoppingCart';
-import Loading from './Loading';
+import Footer from './Footer';
 
 class App extends Component {
     state = {
@@ -45,7 +38,7 @@ class App extends Component {
       this.setState({
         loading: true
       });
-      StoreAPI.get('/products')
+      StoreAPI.get('/products'/* , {params: { limit: 5 }} */)
       .then(({data}) => {
         this.setState({
           loading: false,
@@ -205,31 +198,33 @@ class App extends Component {
       } */
 
       return (
-        <React.Fragment>
-          <NavBar loading={this.state.loading} categories={this.state.categories} getSearchAndCategory={this.getSearchAndCategory} shoppingCartLength={this.state.shoppingCart.length} /* wishlistLength={this.state.wishlist.length} *//>
+          <Container maxWidth='xl' style={{position: 'relative', minHeight: '100vh', padding: 0,  margin: 0, backgroundColor: '#f5f5f5'}}>
+            <NavBar loading={this.state.loading} categories={this.state.categories} getSearchAndCategory={this.getSearchAndCategory} shoppingCartLength={this.state.shoppingCart.length} /* wishlistLength={this.state.wishlist.length} *//>
 
-          <Container style={{paddingTop: 80}} maxWidth='lg'>
-            <Grid item>
-              <Switch>
-                <Route
-                  path='/'
-                  exact
-                  render={(props) => <Home state={this.state} getPriceFilteration={this.getPriceFilteration} getCategoriesFilteration={this.getCategoriesFilteration} getProductAddedToCart={this.getProductAddedToCart} /*getProductAddedToWishlist={this.getProductAddedToWishlist}*/ getSortedBy={this.getSortedBy} {...props} />}
-                />
-                {/* <Route
-                  path='/wishlist'
-                  exact
-                  render={(props) => <WishlistPage wishlist={this.state.wishlist} getWishlist={this.getWishlist} shoppingCart={this.state.shoppingCart} {...props} />}
-                /> */}
-                <Route
-                  path='/cart'
-                  exact
-                  render={(props) => <ShoppingCart shoppingCart={this.state.shoppingCart} getShoppingCart={this.getShoppingCart} getRemovedItemFromCart={this.getRemovedItemFromCart} getRemoveAllItemsFromCart={this.getRemoveAllItemsFromCart} getNewItemQuantity={this.getNewItemQuantity} {...props} />}
-                />
-              </Switch>
-            </Grid>
+            <Container style={{paddingTop: 80, paddingBottom: 50}} maxWidth='lg'>
+              <Grid item>
+                <Switch>
+                  <Route
+                    path='/'
+                    exact
+                    render={(props) => <Home state={this.state} getPriceFilteration={this.getPriceFilteration} getCategoriesFilteration={this.getCategoriesFilteration} getProductAddedToCart={this.getProductAddedToCart} /*getProductAddedToWishlist={this.getProductAddedToWishlist}*/ getSortedBy={this.getSortedBy} {...props} />}
+                  />
+                  {/* <Route
+                    path='/wishlist'
+                    exact
+                    render={(props) => <WishlistPage wishlist={this.state.wishlist} getWishlist={this.getWishlist} shoppingCart={this.state.shoppingCart} {...props} />}
+                  /> */}
+                  <Route
+                    path='/cart'
+                    exact
+                    render={(props) => <ShoppingCart shoppingCart={this.state.shoppingCart} getShoppingCart={this.getShoppingCart} getRemovedItemFromCart={this.getRemovedItemFromCart} getRemoveAllItemsFromCart={this.getRemoveAllItemsFromCart} getNewItemQuantity={this.getNewItemQuantity} {...props} />}
+                  />
+                </Switch>
+              </Grid>
+            </Container>
+
+            <Footer />
           </Container>
-        </React.Fragment>
       );
     }
 }
