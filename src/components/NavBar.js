@@ -1,36 +1,23 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-//import Link from '@material-ui/core/Link';
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Badge from "@material-ui/core/Badge";
 import { Icon } from "semantic-ui-react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Container, AppBar, Toolbar, Typography, Badge } from "@material-ui/core";
 import SearchBox from "./SearchBox";
-import { Grid, Container } from "@material-ui/core";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    //flexGrow: 1,
     backgroundColor: "#fff",
-    //padding: '0 50px'
   },
   search: {
-    //float: "right !important",
     width: '50%'
   },
   title: {
     display: 'inline',
-    //marginRight: '50px'
   },
   linkTitle: {
     fontSize: '1.25rem',
-    //color: '#fff',
-    //marginRight: '15px'
-    //marginLeft: '15px'
   },
   badge: {
     width: '15px',
@@ -42,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NavBar = ({ loading, categories, getSearchAndCategory, shoppingCartLength /*wishlistLength*/ }) => {
+const NavBar = (props) => {
+  const { loading, shoppingCartLength /*wishlistLength*/ } = props;
   const classes = useStyles();
 
   return (
@@ -59,11 +47,7 @@ const NavBar = ({ loading, categories, getSearchAndCategory, shoppingCartLength 
                 </Typography>
               </Grid>
               <Grid item xs={9} md={10}>
-                <SearchBox
-                  loading={loading}
-                  categories={categories}
-                  getSearchAndCategory={getSearchAndCategory}
-                />
+                <SearchBox />
               </Grid>
             </Grid>
             <Grid item container direction='row' alignItems='center' justify='flex-end' xs={2} md={4}>
@@ -99,4 +83,11 @@ const NavBar = ({ loading, categories, getSearchAndCategory, shoppingCartLength 
   );
 };
 
-export default NavBar;
+const mapStateToProps = (state) => {
+  return {
+    loading: state.products.loading,
+    shoppingCartLength: state.shoppingCart.shoppingCart.length
+  };
+};
+
+export default connect(mapStateToProps)(NavBar);

@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button, Message, Confirm, Modal } from 'semantic-ui-react';
-import { Container, Grid } from '@material-ui/core';
-import Hidden from '@material-ui/core/Hidden';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
+import { Grid, Container, Hidden, Typography, Paper, Link } from '@material-ui/core';
 import CartItem from './CartItem';
+import { connect } from 'react-redux';
+import { clearShoppingCart } from './../store/actions';
 
 const useStyle = makeStyles(theme => ({
     summaryCard: {
@@ -35,11 +33,12 @@ const useStyle = makeStyles(theme => ({
 }));
 
 const ShoppingCart = (props) => {
+    const { shoppingCart, clearShoppingCart } = props;
     const classes = useStyle();
     const [openConfirm, setOpenConfirm] = useState(false);
     const [openSummaryCard, setOpenSummaryCard] = useState(false);
-    const total = props.shoppingCart.length > 0? props.shoppingCart.map(item => (item.product.price * item.quantity)).reduce((tot, num) => tot + num).toFixed(2) : 0;
-
+    const total = shoppingCart.length > 0? shoppingCart.map(item => (item.product.price * item.quantity)).reduce((tot, num) => tot + num).toFixed(2) : 0;
+    
     const handleOpenConfirm = () => {
         setOpenConfirm(true);
     };
@@ -50,24 +49,20 @@ const ShoppingCart = (props) => {
 
     const handleYesRemoveAllItems = () => {
         handleCloseConfirm();
-        props.getRemoveAllItemsFromCart(true);
+        clearShoppingCart();
     };
 
-    const getRemovedItem = (item) => {
-        props.getRemovedItemFromCart(item);
-    };
-
-    const renderedItems = props.shoppingCart.map(item => {
+    const renderedItems = shoppingCart.map(item => {
         return (
-            <Grid key={item.product.id} container item xs={12}>
-                <CartItem item={item} getRemovedCartItem={getRemovedItem} getNewItemQuantity={props.getNewItemQuantity}/>
+            <Grid key={item.id} container item xs={12}>
+                <CartItem item={item} />
             </Grid>
         );
     });
 
     return ( 
         <Container maxWidth='md'>
-            <Typography variant="h4" gutterBottom>Shopping cart has ({props.shoppingCart.length}) {props.shoppingCart.length === 1? 'item' : 'items'}</Typography>
+            <Typography variant="h4" gutterBottom>Shopping cart has ({shoppingCart.length}) {shoppingCart.length === 1? 'item' : 'items'}</Typography>
             <Grid container direction="row" spacing={3}>
                 <Grid item xs={12} md={8}>
                     {
@@ -95,14 +90,14 @@ const ShoppingCart = (props) => {
                                 </Grid>
                                 <Grid item container xs={6} md={12} alignItems='center' spacing={1}>
                                     <Grid item sm={12}>
-                                        <Button color='green' fluid disabled={props.shoppingCart.length === 0}>Checkout</Button>
+                                        <Button color='green' fluid disabled={shoppingCart.length === 0}>Checkout</Button>
                                     </Grid>
                                     <Grid item sm={12}>
                                         <Button color='blue' fluid basic compact><NavLink to='/'>Continue shopping</NavLink></Button>
                                     </Grid>
                                     <Grid item sm={12}>
                                         <div className={classes.removeBtn}>
-                                            <Link component='button' underline='none' color={props.shoppingCart.length === 0? 'initial' : 'error'} onClick={handleOpenConfirm} disabled={props.shoppingCart.length === 0}>Remove all items</Link>
+                                            <Link component='button' underline='none' color={shoppingCart.length === 0? 'initial' : 'error'} onClick={handleOpenConfirm} disabled={shoppingCart.length === 0}>Remove all items</Link>
                                         </div> 
                                     </Grid>
                                 </Grid>
@@ -135,14 +130,14 @@ const ShoppingCart = (props) => {
                     <Modal.Content>
                         <Grid container direction='row' justify='center' spacing={2}>
                             <Grid item xs={12}>
-                                <Button color='green' fluid disabled={props.shoppingCart.length === 0}>Checkout</Button>
+                                <Button color='green' fluid disabled={shoppingCart.length === 0}>Checkout</Button>
                             </Grid>
                             <Grid item xs={12}>
                                 <Button color='blue' fluid basic compact><NavLink to='/'>Continue shopping</NavLink></Button>
                             </Grid>
                             <Grid item xs={12}>
                                 <div className={classes.removeBtn}>
-                                    <Link component='button' underline='none' color={props.shoppingCart.length === 0? 'initial' : 'error'} onClick={handleOpenConfirm} disabled={props.shoppingCart.length === 0}>Remove all items</Link>
+                                    <Link component='button' underline='none' color={shoppingCart.length === 0? 'initial' : 'error'} onClick={handleOpenConfirm} disabled={shoppingCart.length === 0}>Remove all items</Link>
                                 </div> 
                             </Grid>
                         </Grid>
@@ -152,38 +147,17 @@ const ShoppingCart = (props) => {
         </Container>
     );
 }
- 
-export default ShoppingCart;
 
-{/* 
-                <Grid item xs={12} md={4}>
-                    <Paper className={classes.summaryCard} elevation={3}>
-                        <Grid container direction='row' justify='center' spacing={2}>
-                            <Grid item xs={6} md={12}>
-                                <Typography variant="h5" gutterBottom>Total:</Typography>
-                                <Typography variant="h4" gutterBottom>${total}</Typography>
-                                {/* <Grid item xs={2} md={12}>
-                                </Grid>
-                                <Grid item xs={10} md={12}>
-                                </Grid>
-                                </Grid>
-                            <Grid item container xs={6} md={12} alignItems='center' spacing={1}>
-                                <Grid item xs={6} sm={12}>
-                                    <Button color='green' fluid disabled={props.shoppingCart.length === 0}>Checkout</Button>
-                                </Grid>
-                                <Hidden smDown>
-                                    <Grid item sm={12}>
-                                        <Button color='blue' fluid basic compact><NavLink to='/'>Continue shopping</NavLink></Button>
-                                    </Grid>
-                                </Hidden>
-                                <Grid item xs={6} sm={12}>
-                                    <div className={classes.removeBtn}>
-                                        <Link component='button' underline='none' color={props.shoppingCart.length === 0? 'initial' : 'error'} onClick={handleClickOpen} disabled={props.shoppingCart.length === 0}>Remove all items</Link>
-                                    </div> 
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Paper>
-                </Grid>
-            </Grid>
- */}
+const mapStateToProps = (state) => {
+    return {
+        shoppingCart: state.shoppingCart.shoppingCart
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        clearShoppingCart: () => dispatch(clearShoppingCart())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);

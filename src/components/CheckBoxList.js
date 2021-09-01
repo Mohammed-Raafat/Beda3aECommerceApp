@@ -1,32 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import React from 'react';
 import Skeleton from 'react-loading-skeleton';
+import { FormGroup, FormControl, FormControlLabel, Checkbox, Typography, List, ListItem } from '@material-ui/core';
+import { capitalizeFirstLetter } from '../OwnMethods';
+import { setCategoriesFilter } from '../store/actions';
+import { connect } from 'react-redux';
 
-const CheckBoxList = ({ title, checkBoxList, getCategoriesFilteration }) => {
+const CheckBoxList = (props) => {
+    const { loading, title, checkBoxList, setCategoriesFilter } = props;
+    
     const titleId = title.toLowerCase().replace(' ', '-');
 
-    const [state, setState] = useState(checkBoxList);
-    
     const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked });
+        setCategoriesFilter({ ...checkBoxList, [event.target.name]: event.target.checked });
     };
-
-    useEffect(() => {
-        getCategoriesFilteration(state);
-    }, [state]);
 
     const renderedList = Object.keys(checkBoxList).map(checkbox => {
         return (
             <ListItem key={checkbox}>
                 <FormControlLabel
-                    control={<Checkbox checked={state.checkbox} onChange={handleChange} name={checkbox} color="primary"/>}
-                    label={checkbox.charAt(0).toUpperCase() + checkbox.substring(1)}
+                    control={<Checkbox checked={checkBoxList.checkbox} onChange={handleChange} name={checkbox} color="primary"/>}
+                    label={capitalizeFirstLetter(checkbox)}
                 />
             </ListItem>
         );
@@ -42,7 +35,9 @@ const CheckBoxList = ({ title, checkBoxList, getCategoriesFilteration }) => {
             <Typography id={`${titleId}-checkbox-list`} variant="h6" gutterBottom>
                 {title}:
             </Typography>
-            {Object.keys(checkBoxList).length === 0?
+
+            {//Object.keys(checkBoxList).length === 0?
+                loading?
                 renderedSkeletonList
                 :
                 <FormGroup row>
@@ -53,4 +48,16 @@ const CheckBoxList = ({ title, checkBoxList, getCategoriesFilteration }) => {
     );
 };
 
-export default CheckBoxList;
+const mapStateToProps = (state) => {
+    return {
+        loading: state.products.loading
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setCategoriesFilter: (categories) => dispatch(setCategoriesFilter(categories))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CheckBoxList);

@@ -4,6 +4,11 @@ import { Grid } from "@material-ui/core";
 import { Card, Icon, Image, Button, Label } from "semantic-ui-react";
 import Skeleton from 'react-loading-skeleton';
 import ImageModal from "./ImageModal";
+import { addToShoppingCart } from "../store/actions";
+import { connect } from "react-redux";
+import { editProductQuantityInShoppingCart } from './../store/actions';
+import { getValueFromArrOfObj, isInArray } from './../OwnMethods';
+import { clearShoppingCart } from './../store/actions/index';
 
 const useStyles = makeStyles(() => ({
   imgDiv: {
@@ -18,16 +23,43 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ProductGridCard = ({
-  loading,
-  product,
-  productAddedToCart /*productAddedToWishlist, isInWishList*/,
-}) => {
+const ProductGridCard = (props) => {
+  const { loading, shoppingCart, product, isInShoppingCart, editProductQuantityInShoppingCart, addToShoppingCart } = props; /*productAddedToWishlist, isInWishList*/
   //const [loved, setLoved] = useState(isInWishList);
   const classes = useStyles();
-//  const loading = true;
+
   const handleAddToCart = () => {
-    productAddedToCart(product);
+    //let quantity;
+    if(shoppingCart.length === 0) {
+      addToShoppingCart(product);
+    } else {
+      const index = shoppingCart.map(item => item.product).indexOf(product);
+      if(index !== -1) {
+        editProductQuantityInShoppingCart(shoppingCart[index].id, shoppingCart[index].quantity + 1);
+      } else {
+        addToShoppingCart(product);
+      }
+      /* shoppingCart.map(item => {
+        console.log(item.product.id, product.id)
+        if(item.product.id === product.id) {
+          editProductQuantityInShoppingCart(product.id, item.quantity + 1);
+        } else {
+          addToShoppingCart(product);
+        }
+      }); */
+    }
+    /* if(isInShoppingCart) {
+      console.log('isInShoppingCart')
+      shoppingCart.map(item => {
+        if(item.id === product.id) {
+          quantity = item.quantity;
+        }
+      });
+      editProductQuantityInShoppingCart(product.id, quantity + 1);
+    } else {
+      console.log('isNOTInShoppingCart')
+      addToShoppingCart(product);
+    } */
   };
 
   /*   const handleAddToWishlist = () => {
@@ -97,4 +129,20 @@ const ProductGridCard = ({
   );
 };
 
-export default ProductGridCard;
+const mapStateToProps = (state, ownProps) => {
+  return {
+      loading: state.products.loading,
+      //isInShoppingCart: isInArray(state.shoppingCart.shoppingCart, ownProps.product),
+      shoppingCart: state.shoppingCart.shoppingCart
+      //productQuantity: getValueFromArrOfObj(state.shoppingCart.shoppingCart, ownProps.product, 'quantity')
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToShoppingCart: (product) => dispatch(addToShoppingCart(product)),
+    editProductQuantityInShoppingCart: (id, quantity) => dispatch(editProductQuantityInShoppingCart(id, quantity)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductGridCard);

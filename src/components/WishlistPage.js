@@ -1,8 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Card, Icon, Image, Item, Message, Segment } from 'semantic-ui-react';
-import { Grid, Container } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { Grid, Container, Typography } from '@material-ui/core';
 import ProductListCard from './ProductListCard';
 
 const WishlistPage = ({ wishlist }) => {
@@ -37,7 +36,7 @@ const WishlistPage = ({ wishlist }) => {
 export default WishlistPage;
 
 
-{/* <div>
+/* <div>
             {
                 wishlist.map(product => (
                     <Card>
@@ -60,4 +59,4 @@ export default WishlistPage;
                     </Card>
                 ))
             }
-        </div> */}
+        </div> */

@@ -6,6 +6,7 @@ import { Grid, Paper, Hidden } from '@material-ui/core';
 //import Hidden from '@material-ui/core/Hidden';
 import ProductsView from './ProductsView';
 import Filters from './Filters';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
     filterBtn: {
@@ -24,12 +25,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Home = (props) => {
+    const { loading } = props;
     const classes = useStyles();
     const [open, setOpen] = useState(false);
 
-    const getProductAddedToCart = (prod) => {
-        props.getProductAddedToCart(prod);
-    };
+
 
 /*     const getProductAddedToWishlist = (prod, loved) => {
         props.getProductAddedToWishlist(prod, loved);
@@ -43,17 +43,17 @@ const Home = (props) => {
                         onClose={() => setOpen(false)}
                         onOpen={() => setOpen(true)}
                         open={open}
-                        trigger={<Button circular color='blue' icon='filter' className={classes.filterBtn} size='huge' disabled={props.state.loading}/>}
+                        trigger={<Button circular color='blue' icon='filter' className={classes.filterBtn} size='huge' disabled={loading}/>}
                         className={classes.modal}
                     >
                         <Modal.Header>Filters</Modal.Header>
                         <Modal.Content>
                             <Filters
-                                loading={props.state.loading}
+                                /* loading={props.state.loading}
                                 filteredCategories={props.state.filteredCategories}
                                 getCategoriesFilteration={props.getCategoriesFilteration}
                                 price={props.state.filteredPrice}
-                                getPriceFilteration={props.getPriceFilteration}
+                                getPriceFilteration={props.getPriceFilteration} */
                             />
                         </Modal.Content>
                     </Modal>
@@ -62,29 +62,35 @@ const Home = (props) => {
                     <Grid item xs={12} md={3} xl={2}>
                         <Paper style={{padding: 5}}>
                             <Filters
-                                loading={props.state.loading}
+                                /* loading={props.state.loading}
                                 filteredCategories={props.state.filteredCategories}
                                 getCategoriesFilteration={props.getCategoriesFilteration}
                                 price={props.state.filteredPrice}
-                                getPriceFilteration={props.getPriceFilteration}
+                                getPriceFilteration={props.getPriceFilteration} */
                             />
                         </Paper>
                     </Grid>
                 </Hidden>
                 <Grid item xs={12} md={9} xl={10}>
                     <ProductsView
-                        loading={props.state.loading}
-                        categories={Object.keys(props.state.filteredCategories).filter(key => props.state.filteredCategories[key])}
-                        filteredProducts={props.state.filteredProducts}
-                        getProductAddedToCart={getProductAddedToCart}
+                        //loading={props.state.loading}
+                        categories={[]}//{Object.keys(props.state.filteredCategories).filter(key => props.state.filteredCategories[key])}
+                        //filteredProducts={props.state.filteredProducts}
+                        //getProductAddedToCart={getProductAddedToCart}
                         //getProductAddedToWishlist={getProductAddedToWishlist}
                         //wishlist={props.state.wishlist}
-                        sortedBy={props.state.sortedBy}
-                        getSortedBy={props.getSortedBy}
+                        //sortedBy={props.state.sortedBy}
+                        //getSortedBy={props.getSortedBy}
                     />
                 </Grid>
             </Grid>
     );
 }
- 
-export default Home;
+
+const mapStateToProps = (state) => {
+    return {
+        loading: state.products.loading
+    };
+};
+
+export default connect(mapStateToProps)(Home);

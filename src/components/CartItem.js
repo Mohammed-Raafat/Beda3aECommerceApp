@@ -1,10 +1,9 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import { Label, Dropdown } from 'semantic-ui-react';
+import { Grid, Paper, Typography, Link } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux'
+import { deleteFromShoppingCart, editProductQuantityInShoppingCart } from './../store/actions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,19 +30,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CartItem = ({ item, getRemovedCartItem, getNewItemQuantity }) => {
+const CartItem = (props) => {
+    const { item, editProductQuantityInShoppingCart, deleteFromShoppingCart} = props;
     const classes = useStyles();
     
     const maxQuantity = 7;
     const options = [...Array(maxQuantity).keys()].map(num => ({ key: num+1, text: (num+1).toString(), value: num+1 }));
     
     const handleDropdownChange = (e, data) => {
-        getNewItemQuantity(item, data.value);
+        editProductQuantityInShoppingCart(item.id, data.value);
     };
 
     const handleRemoveItem = (e) => {
         e.preventDefault();
-        getRemovedCartItem(item);
+        deleteFromShoppingCart(item.id);
     };
 
     return (
@@ -82,4 +82,11 @@ const CartItem = ({ item, getRemovedCartItem, getNewItemQuantity }) => {
     );
 }
 
-export default CartItem;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        deleteFromShoppingCart: (itemId) => dispatch(deleteFromShoppingCart(itemId)),
+        editProductQuantityInShoppingCart: (itemId, newQuantity) => dispatch(editProductQuantityInShoppingCart(itemId, newQuantity))
+    };
+};
+
+export default connect(null, mapDispatchToProps)(CartItem);

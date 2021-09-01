@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Icon, Button, Segment, Item, Card, Label, Placeholder } from 'semantic-ui-react';
-import { Grid } from '@material-ui/core';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import ProductGridCard from './ProductGridCard';
-import Typography from '@material-ui/core/Typography';
-import Chip from '@material-ui/core/Chip';
-import Hidden from '@material-ui/core/Hidden';
+import { connect } from 'react-redux';
+import { Menu, Icon, Button, Segment, Item } from 'semantic-ui-react';
+import { Grid, FormControl, Select, Typography, Chip, Hidden } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import ProductGridCard from './ProductGridCard';
 import ProductListCard from './ProductListCard';
+import { viewAs, sortBy} from '../store/actions';
+import { sortArrOfObjBy } from './../OwnMethods';
 
 const useStyle = makeStyles(() => ({
     categories: {
@@ -26,37 +24,16 @@ const useStyle = makeStyles(() => ({
         backgroundColor: 'transparent !important',
         padding: '0 5px !important',
     }
+
 }));
 
-const sortBy = (arr, value, ascOrDesc = 'asc') => {
-    if(ascOrDesc === 'asc') {
-        return arr.sort((a, b) => {
-            if(a[value] < b[value]) return -1;
-            if(a[value] > b[value]) return 1;
-            return 0;
-        });
-    } else if(ascOrDesc === 'desc') {
-        return arr.sort((a, b) => {
-            if(a[value] > b[value]) return -1;
-            if(a[value] < b[value]) return 1;
-            return 0;
-        });
-    }
-};
-
-const ProductsView = ({ loading, categories, filteredProducts, getProductAddedToCart, /*getProductAddedToWishlist, wishlist,*/ sortedBy , getSortedBy}) => {
-    const setProductAddedToCart = (prod) => {
-        getProductAddedToCart(prod);
-    };
-
-/*     const setProductAddedToWishlist = (prod, loved) => {
-        getProductAddedToWishlist(prod, loved);
-    }; */
+const ProductsView = (props) => {
+    const { loading, categories, filteredProducts, viewAs, sortBy, wayViewAs /* wishlist*/} = props;
 
     const renderGridProducts = (arr) => {
         return arr.map(product => 
             <Grid key={product.id} item xs={12} sm={6} lg={4} container justify="center">
-                <ProductGridCard product={product} productAddedToCart={setProductAddedToCart} /*productAddedToWishlist={setProductAddedToWishlist} isInWishList={wishlist.find(prod => prod.id === product.id)? true : false}*//>
+                <ProductGridCard product={product} /* isInWishList={wishlist.find(prod => prod.id === product.id)? true : false}*//>
             </Grid>
         );
     };
@@ -64,7 +41,7 @@ const ProductsView = ({ loading, categories, filteredProducts, getProductAddedTo
     const renderListProducts = (arr) => {
         return (
             <Item.Group divided>
-                {arr.map(product => <ProductListCard key={product.id} product={product} productAddedToCart={setProductAddedToCart} /*productAddedToWishlist={setProductAddedToWishlist} isInWishList={wishlist.find(prod => prod.id === product.id)? true : false}*//>)}
+                {arr.map(product => <ProductListCard key={product.id} product={product} /*productAddedToWishlist={setProductAddedToWishlist} isInWishList={wishlist.find(prod => prod.id === product.id)? true : false}*//>)}
             </Item.Group>
         );
     };
@@ -89,7 +66,7 @@ const ProductsView = ({ loading, categories, filteredProducts, getProductAddedTo
     
     const [productsToShow, setProductsToShow] = useState(filteredProducts);
     const [renderedProducts, setRenderedProducts] = useState(renderGridProducts(productsToShow));
-    const [activeListViewBtn, setActiveListViewBtn] = useState(false);
+    const [activeListViewBtn, setActiveListViewBtn] = useState(wayViewAs === 'list');
     const options = [
         {
             value: 'default',
@@ -112,36 +89,40 @@ const ProductsView = ({ loading, categories, filteredProducts, getProductAddedTo
     }, [filteredProducts]);
 
     useEffect(() => {
-        if(activeListViewBtn) {
+        if(wayViewAs === 'list') {
             setRenderedProducts(renderListProducts(productsToShow));
-        } else {
+        } else if(wayViewAs === 'grid'){
             setRenderedProducts(renderGridProducts(productsToShow));
         }
     }, [productsToShow, activeListViewBtn]);
 
 
     const handleSort = (value, ascOrDesc) => {
-        const newProducts = sortBy(filteredProducts, value, ascOrDesc);
+        const newProducts = sortArrOfObjBy(filteredProducts, value, ascOrDesc);
         setProductsToShow([...newProducts]);
     };
 
     const handleDropdownChange = (e) => {
-        const val = e.target.value;
+        let val = e.target.value;
+        sortBy(val);
         if(val === 'default') {
             handleSort('id', 'asc');
         } else {
-            handleSort(val.split('-')[0], val.split('-')[1]);
+            val = val.split('-');
+            handleSort(val[0], val[1]);
         }
     };
 
     const handleListView = () => {
         if(!activeListViewBtn) {
+            viewAs('list');
             setActiveListViewBtn(true);
         }
     };
 
     const handleGridView = () => {
         if(activeListViewBtn) {
+            viewAs('grid');
             setActiveListViewBtn(false);
         }
     };
@@ -185,9 +166,7 @@ const ProductsView = ({ loading, categories, filteredProducts, getProductAddedTo
                         <Typography variant="subtitle1">Sort by:&nbsp;</Typography>
                         <FormControl variant="outlined" size='small'>
                             <Select native onChange={handleDropdownChange}>
-                                <option value='default'>Default</option>
-                                <option value='asc'>Price: Low to High</option>
-                                <option value='desc'>Price: High to Low</option>
+                                {renderedOptions}
                             </Select>
                         </FormControl>
                     </Menu.Item>
@@ -203,5 +182,20 @@ const ProductsView = ({ loading, categories, filteredProducts, getProductAddedTo
         </Grid>
     );
 }
- 
-export default ProductsView;
+
+const mapStateToProps = (state) => {
+    return {
+        loading: state.products.loading,
+        filteredProducts: state.filters.filteredProducts,
+        wayViewAs: state.filters.viewAs
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        viewAs: (way) => dispatch(viewAs(way)),
+        sortBy: (value) => dispatch(sortBy(value)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductsView);

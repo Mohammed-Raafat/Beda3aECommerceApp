@@ -1,0 +1,29 @@
+﻿https://react.semantic-ui.com/addons/pagination/#usage-shorthand
+https://material-ui.com/components/grid/
+https://abdelrahmangad.netlify.app/#contact
+https://gad-book-store.herokuapp.com/cart
+http://gad-ecommerce.herokuapp.com/shop?category=laptops
+https://0111.netlify.app/#/contact
+https://aroma-ecommerce-website.netlify.app/
+
+localhost:3000 vs localhost:3000/home
+
+Color for all is #00B5AD
+Logo
+
+Split Components
+واشيل الاكواد الزيادة
+
+لو في كموبوننت مش محتاج ريدكس ممكن ابعتله كبروبس من البيرنت وخلاص
+
+API Error handling
+
+Save state on browsers to get info from it: local storage https://www.w3schools.com/jsref/prop_win_localstorage.asp
+
+Search box
+
+Add to wishlist
+Wishlist
+
+React Developer Tools (Profiler)
+Add portofolio to CV

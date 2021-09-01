@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'semantic-ui-react';
-import Typography from '@material-ui/core/Typography';
-import Slider from '@material-ui/core/Slider';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Typography, TextField, Slider } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { setPriceFilter } from '../store/actions';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   paddingTopDown: {
     paddingTop: 5,
     paddingBottom: 5,
@@ -18,18 +17,23 @@ const useStyles = makeStyles((theme) => ({
   dash: {
     textAlign: 'center'
   },
-}));
+});
 
-const RangeSlider = ({ loading, title, start, end, getPriceFilteration }) => {
+const RangeSlider = (props) => {
+  const { loading, title, start, end, setPriceFilter } = props;
   const titleId = title.toLowerCase().replace(' ', '-');
   const [value, setValue] = useState([start, end]);
-  
+
   const classes = useStyles();
+
+  useEffect(() => {
+    setValue([start, end]);
+  }, [start, end]);
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
   };
-  
+
   const handleInputChange = (event, index) => {
     if(index === 0) {
       setValue([Number(event.target.value), value[1]]);
@@ -54,12 +58,11 @@ const RangeSlider = ({ loading, title, start, end, getPriceFilteration }) => {
     }
   };
 
-  useEffect(() => {
-    setValue([start, end]);
-  }, [start, end]);
-  
   const handleApplyClick = () => {
-    getPriceFilteration(value);
+    setPriceFilter({
+      start: value[0],
+      end: value[1]
+    });
   };
 
   return (
@@ -103,4 +106,16 @@ const RangeSlider = ({ loading, title, start, end, getPriceFilteration }) => {
   );
 }
 
-export default RangeSlider;
+const mapStateToProps = (state) => {
+  return {
+    loading: state.products.loading
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setPriceFilter: (price) => dispatch(setPriceFilter(price))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RangeSlider);
