@@ -5,7 +5,7 @@ import { Grid, Paper, Hidden } from '@material-ui/core';
 //import Paper from '@material-ui/core/Paper';
 //import Hidden from '@material-ui/core/Hidden';
 import ProductsView from './ProductsView';
-import Filters from './Filters';
+import Filters from '../Filters/Filters';
 import { connect } from 'react-redux';
 
 const useStyles = makeStyles(() => ({

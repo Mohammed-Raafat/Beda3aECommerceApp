@@ -1,14 +1,12 @@
 import React from "react";
+import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import { Card, Icon, Image, Button, Label } from "semantic-ui-react";
 import Skeleton from 'react-loading-skeleton';
 import ImageModal from "./ImageModal";
-import { addToShoppingCart } from "../store/actions";
-import { connect } from "react-redux";
-import { editProductQuantityInShoppingCart } from './../store/actions';
-import { getValueFromArrOfObj, isInArray } from './../OwnMethods';
-import { clearShoppingCart } from './../store/actions/index';
+import { addToShoppingCart, editProductQuantityInShoppingCart, clearShoppingCart } from '../../store/actions';
+import { getValueFromArrOfObj, isInArray } from '../../HelperFunctions';
 
 const useStyles = makeStyles(() => ({
   imgDiv: {

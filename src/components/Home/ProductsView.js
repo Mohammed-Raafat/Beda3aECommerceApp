@@ -5,8 +5,8 @@ import { Grid, FormControl, Select, Typography, Chip, Hidden } from '@material-u
 import { makeStyles } from '@material-ui/core/styles';
 import ProductGridCard from './ProductGridCard';
 import ProductListCard from './ProductListCard';
-import { viewAs, sortBy} from '../store/actions';
-import { sortArrOfObjBy } from './../OwnMethods';
+import { viewAs, sortBy} from '../../store/actions';
+import { sortArrOfObjBy } from '../../HelperFunctions';
 
 const useStyle = makeStyles(() => ({
     categories: {

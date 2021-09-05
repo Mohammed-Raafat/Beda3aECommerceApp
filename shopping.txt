@@ -6,15 +6,11 @@ http://gad-ecommerce.herokuapp.com/shop?category=laptops
 https://0111.netlify.app/#/contact
 https://aroma-ecommerce-website.netlify.app/
 
-localhost:3000 vs localhost:3000/home
-
-Color for all is #00B5AD
-Logo
-
 Split Components
-واشيل الاكواد الزيادة
 
 لو في كموبوننت مش محتاج ريدكس ممكن ابعتله كبروبس من البيرنت وخلاص
+
+اشيل الاكواد الزيادة
 
 API Error handling
 
@@ -24,6 +20,8 @@ Search box
 
 Add to wishlist
 Wishlist
+
+Color for all is #00B5AD
 
 React Developer Tools (Profiler)
 Add portofolio to CV
