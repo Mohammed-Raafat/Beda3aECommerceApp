@@ -118,6 +118,22 @@ export const editProductQuantityInShoppingCart = (id, quantity) => {
   };
 };
 
+export const exactAddToShoppingCart = (product) => {
+  return (dispatch, getState) => {
+    const shoppingCart = getState().shoppingCart.shoppingCart;
+    if(shoppingCart.length === 0) {
+      dispatch(addToShoppingCart(product));
+    } else {
+      const index = shoppingCart.map(item => item.product).indexOf(product);
+      if(index !== -1) {
+        dispatch(editProductQuantityInShoppingCart(shoppingCart[index].id, shoppingCart[index].quantity + 1));
+      } else {
+        dispatch(addToShoppingCart(product));
+      }
+    }
+  };
+};
+
 export const deleteFromShoppingCart = (itemId) => {
   return {
     type: DELETE_FROM_SHOPPING_CART,

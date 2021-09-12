@@ -32,7 +32,7 @@ export const productsReducer = (state = INITIAL_STATE, action) => {
     case FETCH_PRODUCTS_FAILURE:
       return {
         ...state,
-        loading: false,
+        loading: true,
         error: action.payload,
       };
 

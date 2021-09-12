@@ -8,7 +8,7 @@ import {
 } from "../actions/actionTypes";
 
 const INITIAL_STATE = {
-  viewAs: "grid",
+  viewAs: "list",
   sortBy: "default",
   price: {
     start: 0,

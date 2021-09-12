@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
 
-import { Button, Message, Confirm, Modal } from "semantic-ui-react";
-import {
-  Grid,
-  Typography,
-  Paper,
-  Link,
-} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Button, Confirm } from "semantic-ui-react";
+import { Grid, Typography, Paper, Link } from "@material-ui/core";
+
 import { clearShoppingCart } from "../../store/actions";
+import { getTotalPriceFromShoppingCart } from "../../HelperFunctions";
 
 const useStyle = makeStyles((theme) => ({
   summaryCard: {
@@ -19,9 +16,10 @@ const useStyle = makeStyles((theme) => ({
     padding: theme.spacing(2),
     margin: "auto",
   },
+  removeBtn: {
+    textAlign: "center",
+  },
 }));
-
-
 
 const SummaryCard = (props) => {
   const { shoppingCart, clearShoppingCart } = props;
@@ -29,13 +27,7 @@ const SummaryCard = (props) => {
 
   const classes = useStyle();
 
-  const total =
-  shoppingCart.length > 0
-    ? shoppingCart
-        .map((item) => item.product.price * item.quantity)
-        .reduce((tot, num) => tot + num)
-        .toFixed(2)
-    : 0;
+  const total = shoppingCart.length > 0 ? getTotalPriceFromShoppingCart(shoppingCart) : 0;
 
   const handleOpenConfirm = () => {
     setOpenConfirm(true);
@@ -52,63 +44,50 @@ const SummaryCard = (props) => {
 
   return (
     <React.Fragment>
-          <Paper className={classes.summaryCard} elevation={3}>
-      <Grid container direction="row" justify="center" spacing={2}>
-        <Grid item xs={6} md={12}>
-          <Typography variant="h5" gutterBottom>
-            Total:
-          </Typography>
-          <Typography variant="h4" gutterBottom>
-            ${total}
-          </Typography>
-        </Grid>
-        <Grid
-          item
-          container
-          xs={6}
-          md={12}
-          alignItems="center"
-          spacing={1}
-        >
-          <Grid item sm={12}>
-            <Button
-              color="green"
-              fluid
-              disabled={shoppingCart.length === 0}
-            >
-              Checkout
-            </Button>
+      <Paper className={classes.summaryCard} elevation={3}>
+        <Grid container direction="row" justify="center" spacing={2}>
+          <Grid item>
+            <Typography variant="h4" gutterBottom>
+              Total: ${total}
+            </Typography>
           </Grid>
-          <Grid item sm={12}>
-            <Button color="blue" fluid basic compact>
-              <NavLink to="/">Continue shopping</NavLink>
-            </Button>
-          </Grid>
-          <Grid item sm={12}>
-            <div className={classes.removeBtn}>
-              <Link
-                component="button"
-                underline="none"
-                color={shoppingCart.length === 0 ? "initial" : "error"}
-                onClick={handleOpenConfirm}
-                disabled={shoppingCart.length === 0}
-              >
-                Remove all items
-              </Link>
-            </div>
+          <Grid item container alignItems="center" spacing={2}>
+            <Grid item xs={12}>
+              <Button color="green" fluid disabled={shoppingCart.length === 0}>
+                Checkout
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Button color="blue" fluid basic compact>
+                <NavLink to="/">Continue shopping</NavLink>
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <div className={classes.removeBtn}>
+                <Link
+                  component="button"
+                  underline="none"
+                  color={shoppingCart.length === 0 ? "initial" : "error"}
+                  onClick={handleOpenConfirm}
+                  disabled={shoppingCart.length === 0}
+                >
+                  Remove all items
+                </Link>
+              </div>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </Paper>
-    <Confirm
-    open={openConfirm}
-    cancelButton="No"
-    confirmButton="Yes"
-    onCancel={handleCloseConfirm}
-    onConfirm={handleYesRemoveAllItems}
-    header="Are you sure?"
-    content="Your shopping cart items will be removed, Are you sure?"
-  />
+      </Paper>
+
+      <Confirm
+        open={openConfirm}
+        cancelButton="No"
+        confirmButton="Yes"
+        onCancel={handleCloseConfirm}
+        onConfirm={handleYesRemoveAllItems}
+        header="Are you sure?"
+        content="Your shopping cart items will be removed, Are you sure?"
+      />
     </React.Fragment>
   );
 };

@@ -1,3 +1,10 @@
+export const getTotalPriceFromShoppingCart = (arr) => {
+  return arr
+    .map((item) => item.product.price * item.quantity)
+    .reduce((tot, num) => tot + num)
+    .toFixed(2);
+};
+
 export const sortArrOfObjBy = (arr, value, ascOrDesc = "asc") => {
   if (ascOrDesc === "asc") {
     return arr.sort((a, b) => {
