@@ -14,7 +14,7 @@ import {
 
 import ProductGridCard from "./ProductGridCard";
 import ProductListCard from "./ProductListCard";
-import { viewAs, sortBy, addToShoppingCart, editProductQuantityInShoppingCart } from "../../store/actions";
+import { viewAs, sortBy, addToShoppingCart } from "../../store/actions";
 import { sortArrOfObjBy } from "../../HelperFunctions";
 
 const useStyle = makeStyles(() => ({
@@ -36,15 +36,21 @@ const useStyle = makeStyles(() => ({
 }));
 
 const ProductsView = (props) => {
-  const { loading, categories, shoppingCart, filteredProducts, viewAs, sortBy, wayViewAs, addToShoppingCart, editProductQuantityInShoppingCart } =
-    props;
+  const {
+    loading,
+    categories,
+    filteredProducts,
+    viewAs,
+    sortBy,
+    wayViewAs,
+    addToShoppingCart,
+  } = props;
+
   const classes = useStyle();
 
   const [productsToShow, setProductsToShow] = useState(filteredProducts);
-  const [activeListViewBtn, setActiveListViewBtn] = useState(
-    wayViewAs === "list"
-    );
-    
+  const [activeListViewBtn, setActiveListViewBtn] = useState(wayViewAs === "list");
+
   const sortingOptions = [
     {
       value: "default",
@@ -59,33 +65,18 @@ const ProductsView = (props) => {
       name: "Price: High to Low",
     },
   ];
-  
+
   const handleAddToCart = (product) => {
-    if(shoppingCart.length === 0) {
-      addToShoppingCart(product);
-    } else {
-      const index = shoppingCart.map(item => item.product).indexOf(product);
-      if(index !== -1) {
-        editProductQuantityInShoppingCart(shoppingCart[index].id, shoppingCart[index].quantity + 1);
-      } else {
-        addToShoppingCart(product);
-      }
-    }
+    addToShoppingCart(product);
   };
 
   const renderGridProducts = (arr) => {
     return arr.map((product) => (
-      <Grid
+      <ProductGridCard
         key={product.id}
-        item
-        xs={12}
-        sm={6}
-        lg={4}
-        container
-        justify="center"
-      >
-        <ProductGridCard product={product} handleAddToCart={handleAddToCart} />
-      </Grid>
+        product={product}
+        handleAddToCart={handleAddToCart}
+      />
     ));
   };
 
@@ -97,7 +88,11 @@ const ProductsView = (props) => {
     return (
       <Item.Group divided>
         {arr.map((product) => (
-          <ProductListCard key={product.id} product={product} handleAddToCart={handleAddToCart} />
+          <ProductListCard
+            key={product.id}
+            product={product}
+            handleAddToCart={handleAddToCart}
+          />
         ))}
       </Item.Group>
     );
@@ -105,20 +100,16 @@ const ProductsView = (props) => {
 
   const renderSkeletonProductsGrid = (len) => {
     return [...Array(len)].map((e, i) => (
-      <Grid key={i} item xs={12} sm={6} lg={4} container justify="center">
-        <ProductGridCard loading={true} />
-      </Grid>
+      <ProductGridCard key={i} loading={true} />
     ));
   };
 
   const renderSkeletonProductsList = (len) => {
     return (
       <Item.Group divided>
-        {
-          [...Array(len)].map((e, i) => (
-            <ProductListCard key={i} loading={true} />
-            ))
-        }
+        {[...Array(len)].map((e, i) => (
+          <ProductListCard key={i} loading={true} />
+        ))}
       </Item.Group>
     );
   };
@@ -130,7 +121,9 @@ const ProductsView = (props) => {
       categories.map((category) => {
         return (
           <li key={category} className={classes.chip}>
-            <Chip label={category.charAt(0).toUpperCase() + category.substring(1)} />
+            <Chip
+              label={category.charAt(0).toUpperCase() + category.substring(1)}
+            />
           </li>
         );
       })
@@ -277,7 +270,11 @@ const ProductsView = (props) => {
       </Hidden>
       <Segment attached>
         <Grid item container spacing={1} style={{ padding: 5 }}>
-          {loading ? wayViewAs === 'grid'? renderSkeletonProductsGrid(6) : renderSkeletonProductsList(6) : renderedProducts}
+          {loading
+            ? wayViewAs === "grid"
+              ? renderSkeletonProductsGrid(9)
+              : renderSkeletonProductsList(6)
+            : renderedProducts}
         </Grid>
       </Segment>
     </Grid>
@@ -288,11 +285,10 @@ const mapStateToProps = (state) => {
   return {
     loading: state.products.loading,
     filteredProducts: state.filters.filteredProducts,
+    wayViewAs: state.filters.viewAs,
     categories: Object.keys(state.filters.filteredCategories).filter(
       (category) => state.filters.filteredCategories[category]
     ),
-    shoppingCart: state.shoppingCart.shoppingCart,
-    wayViewAs: state.filters.viewAs,
   };
 };
 
@@ -301,7 +297,6 @@ const mapDispatchToProps = (dispatch) => {
     viewAs: (way) => dispatch(viewAs(way)),
     sortBy: (value) => dispatch(sortBy(value)),
     addToShoppingCart: (product) => dispatch(addToShoppingCart(product)),
-    editProductQuantityInShoppingCart: (id, quantity) => dispatch(editProductQuantityInShoppingCart(id, quantity)),
   };
 };
 

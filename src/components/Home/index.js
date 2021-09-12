@@ -2,7 +2,7 @@ import React from "react";
 
 import { Grid, Paper, Hidden } from "@material-ui/core";
 
-import Filters from "../Filters/Filters";
+import Filters from "../Filters";
 import FIltersModal from "./FIltersModal";
 import ProductsView from "./ProductsView";
 

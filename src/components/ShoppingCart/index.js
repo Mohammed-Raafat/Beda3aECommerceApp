@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { connect } from "react-redux";
 
 import { Button, Message, Modal } from "semantic-ui-react";
 import { makeStyles } from "@material-ui/core/styles";
@@ -92,10 +91,4 @@ const ShoppingCart = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    shoppingCart: state.shoppingCart.shoppingCart,
-  };
-};
-
-export default connect(mapStateToProps)(ShoppingCart);
+export default ShoppingCart;

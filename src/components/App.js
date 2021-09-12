@@ -1,15 +1,18 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Route, Redirect, Switch } from "react-router-dom";
+
 import { Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import NavBar from "./NavBar/NavBar";
-import Home from "./Home/Home";
-import ShoppingCart from "./ShoppingCart/ShoppingCart";
+
+import NavBar from "./NavBar";
+import Home from "./Home";
+import ShoppingCart from "./ShoppingCart";
 import Footer from "./Footer";
+import Toast from "./Toast";
 import { fetchProducts } from "./../store/actions";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     position: "relative",
     minHeight: "100vh",
@@ -24,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = (props) => {
-  const { fetchProducts } = props;
+  const { fetchProducts, shoppingCart, shoppingCartLength, errorMessage } =
+    props;
   const classes = useStyles();
 
   useEffect(() => {
@@ -33,12 +37,12 @@ const App = (props) => {
 
   return (
     <Container maxWidth="xl" className={classes.root}>
-      <NavBar />
+      <NavBar shoppingCartLength={shoppingCartLength} />
 
       <Container maxWidth="lg" className={classes.insideContainer}>
         <Grid item>
           <Switch>
-            <Route path="/cart" exact component={ShoppingCart} />
+            <Route path="/cart" exact render={() => <ShoppingCart shoppingCart={shoppingCart} />} />
             <Route path="/" exact component={Home} />
             <Route render={() => <Redirect to="/" />} />
           </Switch>
@@ -46,8 +50,24 @@ const App = (props) => {
       </Container>
 
       <Footer />
+      {errorMessage && (
+        <Toast
+          message={errorMessage}
+          buttonText="Retry"
+          buttonOnClick={fetchProducts}
+          close
+        />
+      )}
     </Container>
   );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    shoppingCart: state.shoppingCart.shoppingCart,
+    shoppingCartLength: state.shoppingCart.shoppingCart.length,
+    errorMessage: state.products.error,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -56,12 +76,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(App);
-
-{
-  /* <Route
-                path='/wishlist'
-                exact
-                render={(props) => <WishlistPage wishlist={this.state.wishlist} getWishlist={this.getWishlist} shoppingCart={this.state.shoppingCart} {...props} />}
-              /> */
-}
+export default connect(mapStateToProps, mapDispatchToProps)(App);

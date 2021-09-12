@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Button, Modal } from "semantic-ui-react";
 import { makeStyles } from "@material-ui/core/styles";
 
-import Filters from "../Filters/Filters";
+import Filters from "../Filters";
 
 const useStyles = makeStyles(() => ({
   filterBtn: {

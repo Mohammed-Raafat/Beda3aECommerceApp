@@ -1,5 +1,5 @@
 import {
-  ADD_TO_SHOPPING_CART,
+  APPEND_TO_SHOPPING_CART,
   EDIT_PRODUCT_QUANTITY_IN_SHOPPING_CART,
   DELETE_FROM_SHOPPING_CART,
   CLEAR_SHOPPING_CART,
@@ -17,7 +17,7 @@ const INITIAL_STATE = {
 
 export const shoppingCartReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case ADD_TO_SHOPPING_CART:
+    case APPEND_TO_SHOPPING_CART:
       return {
         ...state,
         shoppingCart: addToArray(state.shoppingCart, {

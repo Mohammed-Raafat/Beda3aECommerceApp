@@ -5,7 +5,7 @@ import {
 } from "../actions/actionTypes";
 
 const INITIAL_STATE = {
-  loading: true,
+  loading: false,
   products: [],
   categories: [],
   error: "",
@@ -32,7 +32,6 @@ export const productsReducer = (state = INITIAL_STATE, action) => {
     case FETCH_PRODUCTS_FAILURE:
       return {
         ...state,
-        loading: true,
         error: action.payload,
       };
 

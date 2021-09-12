@@ -8,7 +8,7 @@ import {
   SET_CATEGORIES_FILTER,
   SET_PRICE,
   SET_FILTERED_PRODUCTS,
-  ADD_TO_SHOPPING_CART,
+  APPEND_TO_SHOPPING_CART,
   EDIT_PRODUCT_QUANTITY_IN_SHOPPING_CART,
   DELETE_FROM_SHOPPING_CART,
   CLEAR_SHOPPING_CART,
@@ -26,20 +26,20 @@ const fetchProductsRequest = () => {
 const fetchProductsSuccess = (payload) => {
   return {
     type: FETCH_PRODUCTS_SUCCESS,
-    payload
+    payload,
   };
 };
 
 const fetchProductsFailure = (error) => {
   return {
     type: FETCH_PRODUCTS_FAILURE,
-    payload: error
+    payload: error,
   };
 };
 
 export const fetchProducts = () => {
   return (dispatch) => {
-    dispatch(fetchProductsRequest);
+    dispatch(fetchProductsRequest());
     StoreAPI.get("/products")
       .then((response) => {
         const products = response.data;
@@ -47,7 +47,7 @@ export const fetchProducts = () => {
         const categoriesNames = getUniquePropsFromArrOfObj(products, "category");
         const categories = {};
 
-        categoriesNames.forEach(category => categories[category] = false);
+        categoriesNames.forEach((category) => (categories[category] = false));
 
         dispatch(fetchProductsSuccess({ products, categoriesNames }));
         dispatch(setFilteredProducts(products));
@@ -57,7 +57,11 @@ export const fetchProducts = () => {
       })
       .catch((error) => {
         const errorMsg = error.message;
-        dispatch(fetchProductsFailure(errorMsg));
+        if(errorMsg === 'Network Error') {
+          dispatch(fetchProductsFailure('Please check your internet connection.'));
+        } else {
+          dispatch(fetchProductsFailure('An error has occurred. Please try again later.'));
+        }
       });
   };
 };
@@ -65,70 +69,79 @@ export const fetchProducts = () => {
 export const viewAs = (way) => {
   return {
     type: VIEW_AS,
-    payload: way
+    payload: way,
   };
 };
 
 export const sortBy = (value) => {
   return {
     type: SORT_BY,
-    payload: value
+    payload: value,
   };
 };
 
 export const setPriceFilter = (price) => {
   return {
     type: SET_PRICE_FILTER,
-    payload: price
+    payload: price,
   };
 };
 
 export const setCategoriesFilter = (categories) => {
   return {
     type: SET_CATEGORIES_FILTER,
-    payload: categories
+    payload: categories,
   };
 };
 
 export const setPrice = (price) => {
   return {
     type: SET_PRICE,
-    payload: price
+    payload: price,
   };
 };
 
 export const setFilteredProducts = (filteredProducts) => {
   return {
     type: SET_FILTERED_PRODUCTS,
-    payload: filteredProducts
+    payload: filteredProducts,
   };
 };
 
-export const addToShoppingCart = (product) => {
+export const appendToShoppingCart = (item) => {
   return {
-    type: ADD_TO_SHOPPING_CART,
-    payload: product
+    type: APPEND_TO_SHOPPING_CART,
+    payload: item,
   };
 };
 
 export const editProductQuantityInShoppingCart = (id, quantity) => {
   return {
     type: EDIT_PRODUCT_QUANTITY_IN_SHOPPING_CART,
-    payload: { id, quantity }
+    payload: { id, quantity },
   };
 };
 
-export const exactAddToShoppingCart = (product) => {
+export const addToShoppingCart = (product) => {
   return (dispatch, getState) => {
     const shoppingCart = getState().shoppingCart.shoppingCart;
-    if(shoppingCart.length === 0) {
-      dispatch(addToShoppingCart(product));
+    if (shoppingCart.length === 0) {
+      dispatch(appendToShoppingCart(product));
     } else {
-      const index = shoppingCart.map(item => item.product).indexOf(product);
-      if(index !== -1) {
-        dispatch(editProductQuantityInShoppingCart(shoppingCart[index].id, shoppingCart[index].quantity + 1));
+      const index = shoppingCart.map((item) => item.product).indexOf(product);
+      if (index !== -1) {
+        if (shoppingCart[index].quantity < 7) {
+          // Check if it's smaller than the max quantity allowed to user or the store has,
+          // and here it's a static number 7 for example
+          dispatch(
+            editProductQuantityInShoppingCart(
+              shoppingCart[index].id,
+              shoppingCart[index].quantity + 1
+            )
+          );
+        }
       } else {
-        dispatch(addToShoppingCart(product));
+        dispatch(appendToShoppingCart(product));
       }
     }
   };
@@ -137,7 +150,7 @@ export const exactAddToShoppingCart = (product) => {
 export const deleteFromShoppingCart = (itemId) => {
   return {
     type: DELETE_FROM_SHOPPING_CART,
-    payload: itemId
+    payload: itemId,
   };
 };
 

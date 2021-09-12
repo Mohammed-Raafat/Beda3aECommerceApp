@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { connect } from "react-redux";
+
 import { Icon } from "semantic-ui-react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -99,10 +99,4 @@ const NavBar = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    shoppingCartLength: state.shoppingCart.shoppingCart.length,
-  };
-};
-
-export default connect(mapStateToProps)(NavBar);
+export default NavBar;
