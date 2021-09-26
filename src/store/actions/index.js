@@ -40,6 +40,7 @@ const fetchProductsFailure = (error) => {
 export const fetchProducts = () => {
   return (dispatch) => {
     dispatch(fetchProductsRequest());
+
     StoreAPI.get("/products")
       .then((response) => {
         const products = response.data;

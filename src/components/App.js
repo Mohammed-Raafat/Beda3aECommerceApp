@@ -27,8 +27,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const App = (props) => {
-  const { fetchProducts, shoppingCart, shoppingCartLength, errorMessage } =
-    props;
+  const { fetchProducts, shoppingCart, shoppingCartLength, errorMessage, loading } = props;
   const classes = useStyles();
 
   useEffect(() => {
@@ -37,7 +36,7 @@ const App = (props) => {
 
   return (
     <Container maxWidth="xl" className={classes.root}>
-      <NavBar shoppingCartLength={shoppingCartLength} />
+      <NavBar shoppingCartLength={shoppingCartLength} loading={loading} />
 
       <Container maxWidth="lg" className={classes.insideContainer}>
         <Grid item>
@@ -67,6 +66,7 @@ const mapStateToProps = (state) => {
     shoppingCart: state.shoppingCart.shoppingCart,
     shoppingCartLength: state.shoppingCart.shoppingCart.length,
     errorMessage: state.products.error,
+    loading: state.products.loading,
   };
 };
 

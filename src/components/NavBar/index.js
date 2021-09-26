@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = (props) => {
-  const { shoppingCartLength } = props;
+  const { shoppingCartLength, loading } = props;
   const classes = useStyles();
 
   return (
@@ -63,7 +63,7 @@ const NavBar = (props) => {
                 </Typography>
               </Grid>
               <Grid item xs={8} md={9}>
-                <SearchBox />
+                <SearchBox loading={loading} />
               </Grid>
             </Grid>
             <Grid
