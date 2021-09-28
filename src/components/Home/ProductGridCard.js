@@ -2,10 +2,11 @@ import React from "react";
 
 import Skeleton from "react-loading-skeleton";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { Grid } from '@mui/material';
 import { Card, Icon, Image, Button, Label } from "semantic-ui-react";
 
 import ImageModal from "./ImageModal";
+import Rate from "./Rate";
 
 const useStyles = makeStyles(() => ({
   imgDiv: {
@@ -14,9 +15,6 @@ const useStyles = makeStyles(() => ({
   image: {
     width: 100,
     maxHeight: 150,
-  },
-  loveBtn: {
-    padding: 0,
   },
 }));
 
@@ -52,18 +50,18 @@ const ProductGridCard = (props) => {
         )}
         <Card.Content>
           <Card.Meta>
-            <div>
+
               {loading ? (
                 <Skeleton width={50} />
               ) : (
-                <Label size="tiny" color="green" circular>
+                <Rate rating={3} count={200} />
+                /* <Label size="tiny" color="green" circular>
                   In stock
-                </Label>
+                </Label> */
               )}
               <label style={{ float: "right", color: "#000" }}>
                 {loading ? <Skeleton width={50} /> : `$${product.price}`}
               </label>
-            </div>
           </Card.Meta>
           <Card.Description>
             {loading ? <Skeleton /> : product.title}

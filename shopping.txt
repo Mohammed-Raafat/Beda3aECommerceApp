@@ -6,6 +6,9 @@ http://gad-ecommerce.herokuapp.com/shop?category=laptops
 https://0111.netlify.app/#/contact
 https://aroma-ecommerce-website.netlify.app/
 
+Rating Style
+Rating Filter
+Categories APi
 Save state on browsers to get info from it: local storage https://www.w3schools.com/jsref/prop_win_localstorage.asp
 
 React Developer Tools (Profiler)
