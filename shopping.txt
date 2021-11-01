@@ -6,9 +6,14 @@ http://gad-ecommerce.herokuapp.com/shop?category=laptops
 https://0111.netlify.app/#/contact
 https://aroma-ecommerce-website.netlify.app/
 
-Rating Style
-Rating Filter
-Categories APi
+Single Product API and view page
+Pagenation
+
+Close search modal problem
+Check responsiveness
+
+URL like https://www.jumia.com.eg/grains-rice/?sort=rating#catalog-listing
+
 Save state on browsers to get info from it: local storage https://www.w3schools.com/jsref/prop_win_localstorage.asp
 
 React Developer Tools (Profiler)

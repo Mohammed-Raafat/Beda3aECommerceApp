@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import Skeleton from "react-loading-skeleton";
 import {
@@ -9,28 +9,33 @@ import {
   Typography,
   List,
   ListItem,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { capitalizeFirstLetter } from "../../HelperFunctions";
-import { setCategoriesFilter } from "../../store/actions";
+import { fetchCategories, setCategoriesFilter } from "../../store/actions";
+import Toast from './../Toast';
 
 const CheckBoxList = (props) => {
-  const { loading, title, checkBoxList, setCategoriesFilter } = props;
+  const { loading, categories, errorMessage, fetchCategories, setCategoriesFilter, filteredCategories } = props;
 
   const handleChange = (event) => {
     setCategoriesFilter({
-      ...checkBoxList,
+      ...filteredCategories,
       [event.target.name]: event.target.checked,
     });
   };
 
-  const renderedList = Object.keys(checkBoxList).map((checkbox) => {
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const renderedList = categories.map((checkbox) => {
     return (
       <ListItem key={checkbox}>
         <FormControlLabel
           control={
             <Checkbox
-              checked={checkBoxList.checkbox}
+              checked={filteredCategories.checkbox}
               onChange={handleChange}
               name={checkbox}
               color="primary"
@@ -47,8 +52,9 @@ const CheckBoxList = (props) => {
   );
 
   return (
-    <FormControl component="fieldset">
-      <Typography variant="h6" gutterBottom>{title}:</Typography>
+    <React.Fragment>
+      <FormControl component="fieldset">
+      <Typography variant="h6" gutterBottom>Categories:</Typography>
 
       {
         loading ? (
@@ -60,19 +66,31 @@ const CheckBoxList = (props) => {
         )
       }
     </FormControl>
+    {errorMessage && (
+      <Toast
+        message={errorMessage}
+        buttonText="Retry"
+        buttonOnClick={fetchCategories}
+        close
+      />
+    )}
+    </React.Fragment>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.products.loading,
+    loading: state.categoriesReducer.loading,
+    categories: state.categoriesReducer.categories,
+    errorMessage: state.categoriesReducer.error,
+    filteredCategories: state.filtersReducer.filteredCategories,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setCategoriesFilter: (categories) =>
-      dispatch(setCategoriesFilter(categories)),
+    fetchCategories: () => dispatch(fetchCategories()),
+    setCategoriesFilter: (categories) => dispatch(setCategoriesFilter(categories)),
   };
 };
 

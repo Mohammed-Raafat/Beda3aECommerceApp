@@ -6,7 +6,9 @@ export const getTotalPriceFromShoppingCart = (arr) => {
 };
 
 export const sortArrOfObjBy = (arr, value, ascOrDesc = "asc") => {
-  if (ascOrDesc === "asc") {
+  if(value === "rating") {
+    return arr.sort((a, b) => b.rating.rate - a.rating.rate);
+  } else if (ascOrDesc === "asc") {
     return arr.sort((a, b) => {
       if (a[value] < b[value]) return -1;
       if (a[value] > b[value]) return 1;
@@ -89,4 +91,8 @@ export const productsFilteredByPrice = (products, price) => {
   return products.filter(
     (product) => product.price >= price.start && product.price <= price.end
   );
+};
+
+export const productsFilteredByRate = (products, rate) => {
+  return products.filter((product) => product.rating.rate >= rate);
 };

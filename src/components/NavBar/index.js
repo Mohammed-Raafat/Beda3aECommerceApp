@@ -2,7 +2,7 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
 import { Icon } from "semantic-ui-react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import {
   Grid,
   Container,
@@ -11,13 +11,13 @@ import {
   Typography,
   Badge,
   Hidden,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import SearchBox from "./SearchBox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "#fff",
+    backgroundColor: "#fff !important",
   },
   search: {
     width: "50%",
@@ -29,12 +29,13 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.25rem",
   },
   badge: {
-    width: "15px",
-    height: "15px",
-    fontSize: "10px",
-    minWidth: 0,
-    top: "-2px",
-    right: "3px",
+    width: "17px !important",
+    height: "17px !important",
+    minWidth: "17px !important",
+    top: "-2px !important",
+    right: "3px !important",
+    backgroundColor: '#FF5C58',
+    color: '#fff'
   },
   logo: {
     fontFamily: "'Comfortaa', cursive",
@@ -51,7 +52,7 @@ const NavBar = (props) => {
 
   return (
     <AppBar position="fixed" className={classes.root}>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Toolbar style={{ padding: 0 }}>
           <Grid container>
             <Grid item container alignItems="center" xs={10} md={8}>
@@ -71,7 +72,7 @@ const NavBar = (props) => {
               container
               direction="row"
               alignItems="center"
-              justify="flex-end"
+              justifyContent="flex-end"
               xs={2}
               md={4}
             >
@@ -80,12 +81,11 @@ const NavBar = (props) => {
                   <Grid container alignItems="center">
                     <Badge
                       badgeContent={shoppingCartLength}
-                      color="secondary"
                       classes={{ badge: classes.badge }}
                     >
                       <Icon name="shopping cart" />
                     </Badge>
-                    <Hidden xsDown>
+                    <Hidden smDown>
                       <span>&nbsp;Cart</span>
                     </Hidden>
                   </Grid>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import { Menu, Icon, Button, Segment, Item } from "semantic-ui-react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import {
   Grid,
   FormControl,
@@ -10,7 +10,8 @@ import {
   Typography,
   Chip,
   Hidden,
-} from "@material-ui/core";
+} from "@mui/material";
+
 
 import ProductGridCard from "./ProductGridCard";
 import ProductListCard from "./ProductListCard";
@@ -53,8 +54,8 @@ const ProductsView = (props) => {
 
   const sortingOptions = [
     {
-      value: "default",
-      name: "Default",
+      value: "featured",
+      name: "Featured",
     },
     {
       value: "price-asc",
@@ -63,6 +64,10 @@ const ProductsView = (props) => {
     {
       value: "price-desc",
       name: "Price: High to Low",
+    },
+    {
+      value: "rating-desc",
+      name: "Rating",
     },
   ];
 
@@ -155,8 +160,10 @@ const ProductsView = (props) => {
   const handleDropdownChange = (e) => {
     let val = e.target.value;
     sortBy(val);
-    if (val === "default") {
+    if (val === "featured") {
       handleSort("id", "asc");
+    } else if (val === "rating") {
+      handleSort("rating", "desc");
     } else {
       val = val.split("-");
       handleSort(val[0], val[1]);
@@ -179,7 +186,7 @@ const ProductsView = (props) => {
 
   return (
     <Grid container direction="column">
-      <Hidden xsDown>
+      <Hidden smDown>
         <Menu attached="top" widths={1}>
           <Menu.Item>
             <Grid item container direction="row" alignItems="center">
@@ -190,7 +197,7 @@ const ProductsView = (props) => {
                 container
                 direction="row"
                 alignItems="center"
-                justify="center"
+                justifyContent="center"
               >
                 <ul className={classes.categories}>{renderedCategories}</ul>
               </Grid>
@@ -238,7 +245,7 @@ const ProductsView = (props) => {
                   container
                   direction="row"
                   alignItems="center"
-                  justify="center"
+                  justifyContent="center"
                 >
                   <Typography variant="subtitle1">Sort by:&nbsp;</Typography>
                   <FormControl
@@ -283,11 +290,11 @@ const ProductsView = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.products.loading,
-    filteredProducts: state.filters.filteredProducts,
-    wayViewAs: state.filters.viewAs,
-    categories: Object.keys(state.filters.filteredCategories).filter(
-      (category) => state.filters.filteredCategories[category]
+    loading: state.productsReducer.loading,
+    filteredProducts: state.filtersReducer.filteredProducts,
+    wayViewAs: state.filtersReducer.viewAs,
+    categories: Object.keys(state.filtersReducer.filteredCategories).filter(
+      (category) => state.filtersReducer.filteredCategories[category]
     ),
   };
 };

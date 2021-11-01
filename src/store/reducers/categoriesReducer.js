@@ -1,37 +1,37 @@
 import {
-  FETCH_PRODUCTS_REQUEST,
-  FETCH_PRODUCTS_SUCCESS,
-  FETCH_PRODUCTS_FAILURE,
+  FETCH_CATEGORIES_REQUEST,
+  FETCH_CATEGORIES_SUCCESS,
+  FETCH_CATEGORIES_FAILURE,
 } from "../actions/actionTypes";
 
 const INITIAL_STATE = {
   loading: false,
-  products: [],
+  categories: [],
   error: "",
 };
 
-export const productsReducer = (state = INITIAL_STATE, action) => {
+export const categoriesReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case FETCH_PRODUCTS_REQUEST:
+    case FETCH_CATEGORIES_REQUEST:
       return {
         ...state,
         loading: true,
         error: INITIAL_STATE.error,
       };
 
-    case FETCH_PRODUCTS_SUCCESS:
+    case FETCH_CATEGORIES_SUCCESS:
       return {
         ...state,
         loading: INITIAL_STATE.loading,
-        products: action.payload,
-        error: INITIAL_STATE.error,
+        categories: action.payload,
+        error: "",
       };
 
-    case FETCH_PRODUCTS_FAILURE:
+    case FETCH_CATEGORIES_FAILURE:
       return {
         ...state,
-        products: INITIAL_STATE.products,
         error: action.payload,
+        categories: INITIAL_STATE.categories,
       };
 
     default:

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 import { Button } from "semantic-ui-react";
-import { Snackbar, IconButton } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import { Snackbar, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Toast = (props) => {
   const { message, close, buttonText, buttonOnClick } = props;

@@ -2,24 +2,25 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@mui/styles';
 import { Button, Confirm } from "semantic-ui-react";
-import { Grid, Typography, Paper, Link } from "@material-ui/core";
-
+import { Grid, Typography, Paper, Link } from "@mui/material";
 import { clearShoppingCart } from "../../store/actions";
 import { getTotalPriceFromShoppingCart } from "../../HelperFunctions";
 
-const useStyle = makeStyles((theme) => ({
-  summaryCard: {
-    position: "sticky",
-    top: 125,
-    padding: theme.spacing(2),
-    margin: "auto",
-  },
-  removeBtn: {
-    textAlign: "center",
-  },
-}));
+const useStyle = makeStyles((theme) => {
+  return {
+    summaryCard: {
+      position: "sticky",
+      top: 125,
+      padding: theme.spacing(2),
+      margin: "auto",
+    },
+    removeBtn: {
+      textAlign: "center",
+    },
+  }
+});
 
 const SummaryCard = (props) => {
   const { shoppingCart, clearShoppingCart } = props;
@@ -45,7 +46,7 @@ const SummaryCard = (props) => {
   return (
     <React.Fragment>
       <Paper className={classes.summaryCard} elevation={3}>
-        <Grid container direction="row" justify="center" spacing={2}>
+        <Grid container direction="row" justifyContent="center" spacing={2}>
           <Grid item>
             <Typography variant="h4" gutterBottom>
               Total: ${total}
@@ -94,7 +95,7 @@ const SummaryCard = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    shoppingCart: state.shoppingCart.shoppingCart,
+    shoppingCart: state.shoppingCartReducer.shoppingCart,
   };
 };
 

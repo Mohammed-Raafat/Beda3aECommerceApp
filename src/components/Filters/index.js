@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Grid, Divider } from "@material-ui/core";
 
-import CheckBoxList from "./CheckBoxList";
-import RangeSlider from "./RangeSlider";
+import { connect } from "react-redux";
+import { Grid, Divider } from "@mui/material";
+
 import {
   setFilteredProducts,
   setPriceFilter,
@@ -13,9 +12,14 @@ import {
 import {
   productsFilteredByCategories,
   productsFilteredByPrice,
+  productsFilteredByRate,
   getMinMax,
   isAllFalse,
 } from "../../HelperFunctions";
+
+  import CheckBoxList from "./CheckBoxList";
+  import RangeSlider from "./RangeSlider";
+  import RadioBtnList from './RadioBtnList';
 
 const Filters = (props) => {
   const {
@@ -24,6 +28,7 @@ const Filters = (props) => {
     filteredProducts,
     filteredCategories,
     filteredPrice,
+    filteredRate,
     setPriceFilter,
     setFilteredProducts,
     setPrice,
@@ -62,22 +67,37 @@ const Filters = (props) => {
     }
   }, [filteredPrice]);
 
+  useEffect(() => {
+    // Needs improvment
+    let filteredByRate;
+    if(filteredProducts.length === 0) {
+      filteredByRate = productsFilteredByRate(products, filteredRate);
+    } else {
+      filteredByRate = productsFilteredByRate(filteredProducts, filteredRate);
+    }
+
+    setFilteredProducts(filteredByRate);
+  }, [filteredRate]);
+
   return (
     <Grid style={{ padding: 5 }}>
-      <CheckBoxList title="Categories" checkBoxList={filteredCategories} />
-      <Divider />
+      <CheckBoxList />
+      <Divider style={{margin: '10px 0'}}/>
       <RangeSlider title="Price ($)" start={price.start} end={price.end} />
+      <Divider style={{margin: '10px 0'}}/>
+      <RadioBtnList />
     </Grid>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    products: state.products.products,
-    price: state.filters.price,
-    filteredProducts: state.filters.filteredProducts,
-    filteredCategories: state.filters.filteredCategories,
-    filteredPrice: state.filters.filteredPrice,
+    products: state.productsReducer.products,
+    price: state.filtersReducer.price,
+    filteredProducts: state.filtersReducer.filteredProducts,
+    filteredCategories: state.filtersReducer.filteredCategories,
+    filteredPrice: state.filtersReducer.filteredPrice,
+    filteredRate: state.filtersReducer.filteredRate,
   };
 };
 

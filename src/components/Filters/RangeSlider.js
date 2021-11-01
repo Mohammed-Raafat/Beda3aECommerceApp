@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Button } from "semantic-ui-react";
-import { Grid, Typography, TextField, Slider } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Typography, TextField, Slider } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import { setPriceFilter } from "../../store/actions";
 
@@ -86,7 +86,7 @@ const RangeSlider = (props) => {
       <Grid
         container
         direction="row"
-        justify="center"
+        justifyContent="center"
         style={{ margin: "auto" }}
       >
         <div>
@@ -149,7 +149,7 @@ const RangeSlider = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.products.loading,
+    loading: state.productsReducer.loading,
   };
 };
 

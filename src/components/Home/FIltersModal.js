@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 
 import { Button, Modal } from "semantic-ui-react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 
 import Filters from "../Filters";
 
@@ -20,6 +20,7 @@ const useStyles = makeStyles(() => ({
   },
   modal: {
     maxWidth: 440,
+    marginTop: '80px !important'
   },
 }));
 
@@ -48,7 +49,7 @@ const FIltersModal = (props) => {
       className={classes.modal}
     >
       <Modal.Header>Filters</Modal.Header>
-      <Modal.Content>
+      <Modal.Content scrolling>
         <Filters />
       </Modal.Content>
     </Modal>
@@ -57,7 +58,7 @@ const FIltersModal = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.products.loading,
+    loading: state.productsReducer.loading,
   };
 };
 

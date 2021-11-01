@@ -1,11 +1,12 @@
 import React from "react";
 
 import Skeleton from "react-loading-skeleton";
-import { Button, Icon, Image, Item, Label } from "semantic-ui-react";
-import { Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Button, Icon, Image, Item } from "semantic-ui-react";
+import { Grid } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import ImageModal from "./ImageModal";
+import Rate from "../Rate";
 
 const useStyle = makeStyles(() => ({
   item: {
@@ -67,21 +68,28 @@ const ProductListCard = (props) => {
           {loading ? <Skeleton width={350} count={3} /> : product.description}
         </Item.Meta>
         <Item.Extra>
-          <Button
-            primary
-            floated="right"
-            onClick={() => handleAddToCart(product)}
-            disabled={loading}
-          >
-            <Icon name="cart" /> Add to cart
-          </Button>
-          {loading ? (
-            <Skeleton width={50} />
-          ) : (
-            <Label color="green" circular>
-              In stock
-            </Label>
-          )}
+          <Grid container alignItems="center">
+            <Grid item sm={4}>
+              {loading ? (
+                <Rate rate={0} text={0} insideItem />
+              ) : (
+                <Rate
+                  rate={product.rating.rate}
+                  text={product.rating.count}
+                  insideItem
+                />
+              )}
+            </Grid>
+            <Grid container item sm={8} justifyContent="flex-end">
+              <Button
+                primary
+                onClick={() => handleAddToCart(product)}
+                disabled={loading}
+              >
+                <Icon name="cart" /> Add to cart
+              </Button>
+            </Grid>
+          </Grid>
         </Item.Extra>
       </Item.Content>
     </Item>

@@ -3,11 +3,13 @@ import { combineReducers } from "redux";
 import { productsReducer } from "./productsReducer";
 import { filtersReducer } from "./filtersReducer";
 import { shoppingCartReducer } from "./shoppingCartReducer";
+import { categoriesReducer } from './categoriesReducer';
 
 const rootReducer = combineReducers({
-  products: productsReducer,
-  filters: filtersReducer,
-  shoppingCart: shoppingCartReducer,
+  productsReducer,
+  categoriesReducer,
+  filtersReducer,
+  shoppingCartReducer,
 });
 
 export default rootReducer;

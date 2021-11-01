@@ -2,10 +2,14 @@ import {
   FETCH_PRODUCTS_REQUEST,
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILURE,
+  FETCH_CATEGORIES_REQUEST,
+  FETCH_CATEGORIES_SUCCESS,
+  FETCH_CATEGORIES_FAILURE,
   VIEW_AS,
   SORT_BY,
   SET_PRICE_FILTER,
   SET_CATEGORIES_FILTER,
+  SET_RATING_FILTER,
   SET_PRICE,
   SET_FILTERED_PRODUCTS,
   APPEND_TO_SHOPPING_CART,
@@ -17,16 +21,61 @@ import {
 import StoreAPI from "../../apis/StoreAPI";
 import { getMinMax, getUniquePropsFromArrOfObj } from "../../HelperFunctions";
 
+const fetchCategoriesRequest = () => {
+  return {
+    type: FETCH_CATEGORIES_REQUEST,
+  };
+};
+
+const fetchCategoriesSuccess = (data) => {
+  return {
+    type: FETCH_CATEGORIES_SUCCESS,
+    payload: data,
+  };
+};
+
+const fetchCategoriesFailure = (error) => {
+  return {
+    type: FETCH_CATEGORIES_FAILURE,
+    payload: error,
+  };
+};
+
+export const fetchCategories = () => {
+  return (dispatch) => {
+    dispatch(fetchCategoriesRequest());
+
+    StoreAPI.get("/products/categories")
+      .then((response) => {
+        const categories = response.data;
+
+        const filteredCategories = {};
+        categories.forEach((category) => (filteredCategories[category] = false))
+        
+        dispatch(fetchCategoriesSuccess(categories));
+        dispatch(setCategoriesFilter(filteredCategories));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        if(errorMsg === 'Network Error') {
+          dispatch(fetchCategoriesFailure('Please check your internet connection.'));
+        } else {
+          dispatch(fetchCategoriesFailure('An error has occurred. Please try again later.'));
+        }
+      });
+  };
+};
+
 const fetchProductsRequest = () => {
   return {
     type: FETCH_PRODUCTS_REQUEST,
   };
 };
 
-const fetchProductsSuccess = (payload) => {
+const fetchProductsSuccess = (data) => {
   return {
     type: FETCH_PRODUCTS_SUCCESS,
-    payload,
+    payload: data,
   };
 };
 
@@ -45,16 +94,11 @@ export const fetchProducts = () => {
       .then((response) => {
         const products = response.data;
         const price = getMinMax(products, "price");
-        const categoriesNames = getUniquePropsFromArrOfObj(products, "category");
-        const categories = {};
-
-        categoriesNames.forEach((category) => (categories[category] = false));
-
-        dispatch(fetchProductsSuccess({ products, categoriesNames }));
+        
+        dispatch(fetchProductsSuccess(products));
         dispatch(setFilteredProducts(products));
         dispatch(setPriceFilter(price));
         dispatch(setPrice(price));
-        dispatch(setCategoriesFilter(categories));
       })
       .catch((error) => {
         const errorMsg = error.message;
@@ -92,6 +136,13 @@ export const setCategoriesFilter = (categories) => {
   return {
     type: SET_CATEGORIES_FILTER,
     payload: categories,
+  };
+};
+
+export const setRatingFilter = (rate) => {
+  return {
+    type: SET_RATING_FILTER,
+    payload: rate,
   };
 };
 

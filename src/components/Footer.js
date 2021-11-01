@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Grid, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   root: {
@@ -24,7 +24,7 @@ const Footer = () => {
     <Grid
       container
       alignItems="center"
-      justify="center"
+      justifyContent="center"
       className={classes.root}
     >
       <div>

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import { Button, Message, Modal } from "semantic-ui-react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Container, Hidden, Typography } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+import { Grid, Container, Hidden, Typography } from "@mui/material";
 
 import CartItem from "./CartItem";
 import SummaryCard from "./SummaryCard";

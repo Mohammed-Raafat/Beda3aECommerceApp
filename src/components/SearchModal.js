@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { connect } from "react-redux";
 import { Item, Modal } from "semantic-ui-react";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 
 import { addToShoppingCart } from "../store/actions";
 import ProductGridCard from "./Home/ProductGridCard";
@@ -79,8 +79,8 @@ const SearchModal = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    products: state.products.products,
-    wayViewAs: state.filters.viewAs,
+    products: state.productsReducer.products,
+    wayViewAs: state.filtersReducer.viewAs,
   };
 };
 

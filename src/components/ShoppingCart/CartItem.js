@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Label, Dropdown } from "semantic-ui-react";
-import { Grid, Paper, Typography, Link } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Paper, Typography, Link } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import {
   deleteFromShoppingCart,
@@ -80,7 +80,7 @@ const CartItem = (props) => {
                   item
                   xs={12}
                   sm={6}
-                  justify="flex-start"
+                  justifyContent="flex-start"
                   alignItems="center"
                 >
                   Quantity:&nbsp;&nbsp;
@@ -97,7 +97,7 @@ const CartItem = (props) => {
                   item
                   xs={12}
                   sm={6}
-                  justify="flex-end"
+                  justifyContent="flex-end"
                   alignItems="center"
                 >
                   <Label color="teal" size="large">
@@ -105,12 +105,12 @@ const CartItem = (props) => {
                   </Label>
                 </Grid>
               </Grid>
-              <Grid item container justify="flex-end">
+              <Grid item container justifyContent="flex-end">
                 <Link
                   component="button"
                   onClick={handleRemoveItem}
                   underline="none"
-                  color="secondary"
+                  color="error"
                 >
                   Remove
                 </Link>
