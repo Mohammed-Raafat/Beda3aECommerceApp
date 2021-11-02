@@ -11,6 +11,7 @@ import ShoppingCart from "./ShoppingCart";
 import Footer from "./Footer";
 import Toast from "./Toast";
 import { fetchProducts } from "../store/actions";
+import Product from './Product';
 
 const theme = createTheme();
 
@@ -56,6 +57,7 @@ const App = (props) => {
                 exact
                 render={() => <ShoppingCart shoppingCart={shoppingCart} />}
               />
+              <Route path="/products/:id" exact component={Product} />
               <Route path="/" exact component={Home} />
               <Route render={() => <Redirect to="/" />} />
             </Switch>

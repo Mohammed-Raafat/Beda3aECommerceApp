@@ -2,6 +2,9 @@ import {
   FETCH_PRODUCTS_REQUEST,
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILURE,
+  FETCH_PRODUCT_REQUEST,
+  FETCH_PRODUCT_SUCCESS,
+  FETCH_PRODUCT_FAILURE,
   FETCH_CATEGORIES_REQUEST,
   FETCH_CATEGORIES_SUCCESS,
   FETCH_CATEGORIES_FAILURE,
@@ -19,7 +22,7 @@ import {
 } from "./actionTypes";
 
 import StoreAPI from "../../apis/StoreAPI";
-import { getMinMax, getUniquePropsFromArrOfObj } from "../../HelperFunctions";
+import { getMinMax } from "../../HelperFunctions";
 
 const fetchCategoriesRequest = () => {
   return {
@@ -106,6 +109,46 @@ export const fetchProducts = () => {
           dispatch(fetchProductsFailure('Please check your internet connection.'));
         } else {
           dispatch(fetchProductsFailure('An error has occurred. Please try again later.'));
+        }
+      });
+  };
+};
+
+const fetchProductRequest = () => {
+  return {
+    type: FETCH_PRODUCT_REQUEST,
+  };
+};
+
+const fetchProductSuccess = (data) => {
+  return {
+    type: FETCH_PRODUCT_SUCCESS,
+    payload: data,
+  };
+};
+
+const fetchProductFailure = (error) => {
+  return {
+    type: FETCH_PRODUCT_FAILURE,
+    payload: error,
+  };
+};
+
+export const fetchProduct = (id) => {
+  return (dispatch) => {
+    dispatch(fetchProductRequest());
+    
+    StoreAPI.get(`/products/${id}`)
+    .then((response) => {
+        const product = response.data;
+        dispatch(fetchProductSuccess(product));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        if(errorMsg === 'Network Error') {
+          dispatch(fetchProductFailure('Please check your internet connection.'));
+        } else {
+          dispatch(fetchProductFailure('An error has occurred. Please try again later.'));
         }
       });
   };
