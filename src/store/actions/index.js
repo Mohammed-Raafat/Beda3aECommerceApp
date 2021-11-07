@@ -137,7 +137,6 @@ const fetchProductFailure = (error) => {
 export const fetchProduct = (id) => {
   return (dispatch) => {
     dispatch(fetchProductRequest());
-    
     StoreAPI.get(`/products/${id}`)
     .then((response) => {
         const product = response.data;
@@ -219,7 +218,7 @@ export const editProductQuantityInShoppingCart = (id, quantity) => {
 
 export const addToShoppingCart = (product) => {
   return (dispatch, getState) => {
-    const shoppingCart = getState().shoppingCart.shoppingCart;
+    const shoppingCart = getState().shoppingCartReducer.shoppingCart;
     if (shoppingCart.length === 0) {
       dispatch(appendToShoppingCart(product));
     } else {

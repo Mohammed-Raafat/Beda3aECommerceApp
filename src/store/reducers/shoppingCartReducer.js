@@ -20,7 +20,7 @@ export const shoppingCartReducer = (state = INITIAL_STATE, action) => {
     case APPEND_TO_SHOPPING_CART:
       return {
         ...state,
-        shoppingCart: addToArray(state.shoppingCartReducer, {
+        shoppingCart: addToArray(state.shoppingCart, {
           id: action.payload.id,
           product: action.payload,
           quantity: 1,
@@ -31,7 +31,7 @@ export const shoppingCartReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         shoppingCart: editInArray(
-          state.shoppingCartReducer,
+          state.shoppingCart,
           action.payload.id,
           "quantity",
           action.payload.quantity
@@ -41,7 +41,7 @@ export const shoppingCartReducer = (state = INITIAL_STATE, action) => {
     case DELETE_FROM_SHOPPING_CART:
       return {
         ...state,
-        shoppingCart: deleteFromArray(state.shoppingCartReducer, action.payload),
+        shoppingCart: deleteFromArray(state.shoppingCart, action.payload),
       };
 
     case CLEAR_SHOPPING_CART:

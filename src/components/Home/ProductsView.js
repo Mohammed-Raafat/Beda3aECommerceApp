@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import { Menu, Icon, Button, Segment, Item } from "semantic-ui-react";
 import { makeStyles } from "@mui/styles";
@@ -48,6 +49,7 @@ const ProductsView = (props) => {
   } = props;
 
   const classes = useStyle();
+  const history = useHistory();
 
   const [productsToShow, setProductsToShow] = useState(filteredProducts);
   const [activeListViewBtn, setActiveListViewBtn] = useState(wayViewAs === "list");
@@ -75,12 +77,19 @@ const ProductsView = (props) => {
     addToShoppingCart(product);
   };
 
+  const handleProductClick = (product) => {
+    if(product) {
+      history.push(`/products/${product.id}`);
+    }
+  };
+  
   const renderGridProducts = (arr) => {
     return arr.map((product) => (
       <ProductGridCard
         key={product.id}
         product={product}
         handleAddToCart={handleAddToCart}
+        handleProductClick={handleProductClick}
       />
     ));
   };
@@ -97,6 +106,7 @@ const ProductsView = (props) => {
             key={product.id}
             product={product}
             handleAddToCart={handleAddToCart}
+            handleProductClick={handleProductClick}
           />
         ))}
       </Item.Group>

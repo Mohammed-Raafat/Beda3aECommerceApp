@@ -5,13 +5,17 @@ import { Button, Icon, Image, Item } from "semantic-ui-react";
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
-import ImageModal from "./ImageModal";
 import Rate from "../Rate";
 
 const useStyle = makeStyles(() => ({
   item: {
     padding: "30px 0 !important",
     width: "100%",
+    cursor: "pointer",
+    '&:hover': {
+      transform: 'scale(1.02) !important',
+      transition: 'all .3s ease-in-out !important'
+    }
   },
   itemDescription: {
     height: 85,
@@ -20,7 +24,7 @@ const useStyle = makeStyles(() => ({
     textOverflow: "ellipsis",
   },
   image: {
-    width: 100,
+    width: '100px !important',
     maxHeight: 150,
   },
   header: {
@@ -32,23 +36,21 @@ const useStyle = makeStyles(() => ({
 }));
 
 const ProductListCard = (props) => {
-  const { loading, product, handleAddToCart } = props;
+  const { loading, product, handleAddToCart, handleProductClick } = props;
   const classes = useStyle();
 
   return (
-    <Item className={classes.item}>
+    <Item onClick={() => handleProductClick(product)} className={classes.item}>
       <Item.Image>
         {loading ? (
           <Skeleton width={"100%"} height={"100%"} />
         ) : (
-          <ImageModal title={product.title} imgSrc={product.image}>
-            <Image
-              alt={product.title}
-              src={product.image}
-              className={classes.image}
-              centered
-            />
-          </ImageModal>
+          <Image
+            alt={product.title}
+            src={product.image}
+            className={classes.image}
+            centered
+          />
         )}
       </Item.Image>
       <Item.Content>
