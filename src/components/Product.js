@@ -48,9 +48,7 @@ const useStyle = makeStyles((theme) => ({
     fontSize: "20px !important",
     [theme.breakpoints.down("sm")]: {
       margin: '10px 0 !important',
-      // width: "100%",
       textAlign: "center",
-      // backgroundColor: "transparent !important",
     },
   },
   button: {
