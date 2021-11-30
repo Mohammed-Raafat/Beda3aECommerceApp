@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     fontFamily: "'Comfortaa', cursive",
     fontSize: "2rem",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "1.2rem",
     },
   },

@@ -5,9 +5,9 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import { Container, Grid, createTheme } from "@mui/material";
 import { makeStyles, ThemeProvider } from "@mui/styles";
 
-import NavBar from "./NavBar";
-import Home from "./Home";
-import ShoppingCart from "./ShoppingCart";
+import NavBar from "./navbar";
+import Home from "./home";
+import ShoppingCart from "./shopping-cart";
 import Footer from "./Footer";
 import Toast from "./Toast";
 import { fetchProducts } from "../store/actions";

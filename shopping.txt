@@ -6,8 +6,6 @@ http://gad-ecommerce.herokuapp.com/shop?category=laptops
 https://0111.netlify.app/#/contact
 https://aroma-ecommerce-website.netlify.app/
 
-Pagenation
-
 Close search modal problem
 Check responsiveness
 

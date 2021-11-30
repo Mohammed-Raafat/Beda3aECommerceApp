@@ -5,8 +5,8 @@ import { Item, Modal } from "semantic-ui-react";
 import { Grid } from "@mui/material";
 
 import { addToShoppingCart } from "../store/actions";
-import ProductGridCard from "./Home/ProductGridCard";
-import ProductListCard from "./Home/ProductListCard";
+import ProductGridCard from "./home/ProductGridCard";
+import ProductListCard from "./home/ProductListCard";
 
 const SearchModal = (props) => {
   const { searchTerm, products, wayViewAs, addToShoppingCart } = props;

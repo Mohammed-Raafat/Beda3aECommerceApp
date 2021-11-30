@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Label, Item, Button, Icon } from "semantic-ui-react";
 import { fetchProduct } from "./../store/actions";
