@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 import { Icon } from "semantic-ui-react";
@@ -49,9 +49,10 @@ const useStyles = makeStyles((theme) => ({
 const NavBar = (props) => {
   const { shoppingCartLength, loading } = props;
   const classes = useStyles();
+  const navbarRef = useRef();
 
   return (
-    <AppBar position="fixed" className={classes.root}>
+    <AppBar position="fixed" className={classes.root} ref={navbarRef}>
       <Container maxWidth="xl">
         <Toolbar style={{ padding: 0 }}>
           <Grid container>
@@ -64,7 +65,7 @@ const NavBar = (props) => {
                 </Typography>
               </Grid>
               <Grid item xs={8} md={9}>
-                <SearchBox loading={loading} />
+                <SearchBox loading={loading} navbarRef={navbarRef} />
               </Grid>
             </Grid>
             <Grid

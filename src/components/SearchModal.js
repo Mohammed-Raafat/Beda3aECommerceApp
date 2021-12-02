@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 import { connect } from "react-redux";
 import { Item, Modal } from "semantic-ui-react";
 import { Grid } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import { addToShoppingCart } from "../store/actions";
 import ProductGridCard from "./home/ProductGridCard";
 import ProductListCard from "./home/ProductListCard";
 
+
+const useStyles = makeStyles({
+  root: {
+    marginTop: '80px !important'
+  },
+});
+
 const SearchModal = (props) => {
-  const { searchTerm, products, wayViewAs, addToShoppingCart } = props;
+  const { searchTerm, products, wayViewAs, addToShoppingCart, navbarRef } = props;
+  const classes = useStyles();
+  const history = useHistory();
 
   const [open, setOpen] = useState(false);
   const [results, setResults] = useState([]);
@@ -23,8 +34,17 @@ const SearchModal = (props) => {
     setResults(searchResults);
   };
 
-  const handleAddToCart = (product) => {
-    addToShoppingCart(product);
+  const handleAddToCart = (product) => addToShoppingCart(product);
+
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+  
+  const handleProductClick = (product) => {
+    handleCloseModal();
+    if(product) {
+      history.push(`/products/${product.id}`);
+    }
   };
 
   const renderResults = () => {
@@ -38,6 +58,7 @@ const SearchModal = (props) => {
               key={product.id}
               product={product}
               handleAddToCart={handleAddToCart}
+              handleProductClick={handleProductClick}
             />
           ))}
         </Grid>
@@ -63,12 +84,24 @@ const SearchModal = (props) => {
     }
   }, [searchTerm]);
 
+  useEffect(() => {
+    const navbarRefCurrent = navbarRef.current;
+    if (navbarRef && navbarRefCurrent) {
+      navbarRefCurrent.addEventListener('click', handleCloseModal);
+    }
+
+    return () => {
+      navbarRefCurrent.removeEventListener('click', handleCloseModal);
+    }
+  }, []);
+
   return (
     <Modal
-      onClose={() => setOpen(false)}
+      onClose={handleCloseModal}
       onOpen={() => setOpen(true)}
       open={open}
       trigger={props.children}
+      className={classes.root}
       closeIcon
     >
       <Modal.Header>Results</Modal.Header>

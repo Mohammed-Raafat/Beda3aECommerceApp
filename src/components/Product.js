@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Label, Item, Button, Icon } from "semantic-ui-react";
-import { fetchProduct } from "./../store/actions";
+import { fetchProduct, addToShoppingCart } from "./../store/actions";
 import { Container, Paper, Box, Hidden } from "@mui/material";
 import Skeleton from "react-loading-skeleton";
 import Rate from "../components/Rate";
@@ -66,9 +66,13 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 const Product = (props) => {
-  const { product, match, loading, fetchProduct } = props;
+  const { product, match, loading, fetchProduct, addToShoppingCart } = props;
   const classes = useStyle();
   const id = match.params.id;
+
+  const handleAddToCart = (product) => {
+    addToShoppingCart(product);
+  };
 
   useEffect(() => {
     fetchProduct(id);
@@ -122,6 +126,7 @@ const Product = (props) => {
                   floated="right"
                   className={classes.button}
                   disabled={loading}
+                  onClick={() => handleAddToCart(product)}
                 >
                   <Icon name="cart" /> Add to cart
                 </Button>
@@ -149,6 +154,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchProduct: (id) => dispatch(fetchProduct(id)),
+    addToShoppingCart: (product) => dispatch(addToShoppingCart(product)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Product);
